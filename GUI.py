@@ -1,6 +1,11 @@
 import tkinter as tk
 import random
 
+"""
+This File will be the front end of this application that allows the users to see what projects are avaliable
+We will use functions from another file that is a querying the Database to retrieve the projects
+"""
+
 # Dictionary to store tasks for each project and details for each task
 project_tasks = {}
 task_details = {}
