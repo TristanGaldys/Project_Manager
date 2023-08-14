@@ -1,34 +1,43 @@
-"""
-This is the main file for the Project Management Project
+import pandas as pd
 
-The goal of this project is for anyone to be able to open to Application and be able to select their Occupation and then be shown all the projects that are avaliable for the said Occupation
-Every task will have  a set of occupations that can work on it
-We will be using SQL to manage all the data
-"""
+database = {'project.db'}
 
-import sqlite3
+projects = {"Back-end Developer": [["Project Manager", "Stock Analysis"]],
+            "Web Developer": ["Project Manager"],
+            "Data Analyst": [["Project Manager", "Stock Analysis"]],
+            "Data Engineer": [["Project Manager", "Stock Analysis"]]}
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
 
-database = {}
+df_projects = pd.DataFrame(projects)
 
-projects = {"Back-end Developer": ["Project Manager", "Stock Analysis"],
-             "Web Developer": ["Project Manager"],
-             "Data Analyst" : ["Project Manager", "Stock Analysis"],
-             "Data Engineer" : ["Project Manager", "Stock Analysis"]}
+tasks = {"Project Manager": {"Data Engineer": "Create Database", "Back-end Developer": "Implement Database Usage"},
+         "Stock Analysis": ["Import Dataset", "Scrap Data", "Create Database"]}
 
-tasks = {"Project Manager" : {"Data Engineer" : "Create Database", "Back-end Developer" : "Implement Database Usage"},
-         "Stock Analysis" : ["Import Dataset", "Scrap Data", "Create Database"]}
+description = {"Project ManagerCreate Database": "This task is meant to create the database that will \
+                                                    house all the data for this project..ect",
+               "Project ManagerImplement Database Usage": "Description"}
 
-description = {"Project ManagerCreate Database" : "This task is meant to create the database that will house all the data for this project..ect",
-               "Project ManagerImplement Database Usage" : "Description"}
+name = input("Please enter your name: ")
+print('Hi,', name)
+occupation = input("Please choose your occupation (Back-end Developer, Web Developer, Data Analyst, Data Engineer): ")
+print()
+if occupation == 'Back-end Developer':
+    print("Very nice", name)
+if occupation == 'Web Developer':
+    print("Awesome", name)
+if occupation == 'Data Analyst':
+    print("Great", name)
+if occupation == 'Data Engineer':
+    print("Cool", name)
 
-occupation = str(input("Please Enter Your Occupation: "))
+print("This is our list of current projects. What project would you be interested to work on?")
+print()
+print(df_projects)
 
-print(projects[occupation])
+proj = str(input("Which project do you want to dive into: "))
 
-proj = input("Which project do you want to look into: ")
-
-print(tasks[proj][occupation])
-
-task = input("What task would look like to look into: ")
-
-print(description[proj+task])
+print()
+task = input("What task would you like, choose one (Import Dataset, Scrap Data, Create Database): ")
+print()
+print(description)
