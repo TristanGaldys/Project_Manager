@@ -1,11 +1,6 @@
 import tkinter as tk
 import random
 
-"""
-This File will be the front end of this application that allows the users to see what projects are avaliable
-We will use functions from another file that is a querying the Database to retrieve the projects
-"""
-
 # Dictionary to store tasks for each project and details for each task
 project_tasks = {}
 task_details = {}
@@ -46,10 +41,10 @@ def toggle_menu():
 
 root = tk.Tk()
 root.geometry('1000x600')  # Adjusted size
-root.title("Project_Manager")
+root.title("Project Manager")
 
 menu_visible = False
-menu_width = 200
+menu_width = 150  # Adjusted width
 
 # Main content
 content_frame = tk.Frame(root, bg='#2E2E2E')
@@ -63,26 +58,30 @@ hamburger_button_content.pack(anchor='ne', pady=10, padx=10)
 main_frame = tk.Frame(content_frame, bg='#2E2E2E')
 main_frame.pack(fill=tk.BOTH, expand=True)
 
-welcome_label = tk.Label(main_frame, text="Welcome", bg='#2E2E2E', fg='white', font=('Arial', 24, 'bold'))
-welcome_label.pack(pady=20)
+welcome_label = tk.Label(main_frame, text="Welcome", bg='#2E2E2E', fg='white', font=('Arial', 30, 'bold'))
+welcome_label.pack(anchor='w', pady=20, padx=200)
 
-projects_label = tk.Label(main_frame, text="Available Projects", bg='#2E2E2E', fg='white', font=('Arial', 16))
-projects_label.pack(pady=10)
+# New frame to contain projects_label and listbox
+projects_frame = tk.Frame(main_frame, bg='#2E2E2E')
+projects_frame.pack(anchor='w', padx=200)
 
-listbox = tk.Listbox(main_frame, bg='#2E2E2E', fg='white', 
+projects_label = tk.Label(projects_frame, text="Available Projects", bg='#2E2E2E', fg='white', font=('Arial', 20, 'bold'))
+projects_label.pack(anchor='w', pady=(0, 2))
+
+listbox = tk.Listbox(projects_frame, bg='#2E2E2E', fg='white', 
                      bd=0, highlightthickness=0, 
                      selectbackground='#4A4A4A', selectforeground='cyan',
-                     font=('Arial', 12), width=50, height=10)
-listbox.pack(pady=10)
+                     font=('Arial', 16, ), width=50, height=11)
+listbox.pack(anchor='w', pady = (0, 10))
 
-tasks_label = tk.Label(main_frame, text="Tasks", bg='#2E2E2E', fg='white', font=('Arial', 16))
-tasks_label.pack(pady=10)
+tasks_label = tk.Label(main_frame, text="Tasks", bg='#2E2E2E', fg='white', font=('Arial', 20, 'bold'))
+tasks_label.pack(anchor='w', pady=(0,2), padx=200)
 
 tasks_listbox = tk.Listbox(main_frame, bg='#2E2E2E', fg='white', 
                            bd=0, highlightthickness=0, 
                            selectbackground='#4A4A4A', selectforeground='cyan',
-                           font=('Arial', 12), width=50, height=10)
-tasks_listbox.pack(pady=10)
+                           font=('Arial', 16, ), width=50, height=10)
+tasks_listbox.pack(anchor='w', pady=(0, 10), padx=200)
 tasks_listbox.bind("<<ListboxSelect>>", on_task_selected)
 
 # Frame for task details
