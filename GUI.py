@@ -213,20 +213,20 @@ content_frame.pack(fill=tk.BOTH, expand=True, side=tk.LEFT)
 menu_button_frame = tk.Frame(content_frame,  bg='#2E2E2E')
 menu_button_frame.pack(anchor='ne', pady=10, padx=10)
 
-hamburger_button_content = tk.Button(menu_button_frame, text="☰", bg='#2E2E2E', fg='white', relief=tk.FLAT)
-hamburger_button_content.bind("<Enter>", lambda event: show_menu())
-hamburger_button_content.pack()
+ham_hover = tk.Label(menu_button_frame, text="☰", bg='#2E2E2E', fg='white', relief=tk.FLAT, font=("Arial", 18))
+ham_hover.bind("<Enter>", lambda event: show_menu())
+ham_hover.pack()
 
 # Main frame for projects and tasks
 main_frame = tk.Frame(content_frame, bg='#2E2E2E')
 main_frame.pack(fill=tk.BOTH, expand=True)
 
-welcome_label = tk.Label(main_frame, text="Welcome", bg='#2E2E2E', fg='white', font=('Arial', 30, 'bold'))
+welcome_label = tk.Label(main_frame, text="Welcome to Project Manager!", bg='#2E2E2E', fg='white', font=('Arial', 30, 'bold'))
 welcome_label.pack(anchor='w', pady=20, padx=200)
 
 # Frame for projects canvas
 projects_frame = tk.Frame(main_frame, bg='#2E2E2E')
-projects_frame.pack(anchor='w', padx=menu_width, fill=tk.BOTH, expand=True)
+projects_frame.pack(anchor='w', padx=(menu_width, 0), fill=tk.BOTH, expand=True)
 
 projects_label = tk.Label(projects_frame, text="Available Projects", bg='#2E2E2E', fg='white', font=('Arial', 20, 'bold'))
 projects_label.pack(anchor='w', pady=(0, 2))
@@ -245,7 +245,7 @@ canvas.config(yscrollcommand=vbar.set)
 
 # Frame for tasks canvas
 tasks_frame = tk.Frame(main_frame, bg='#2E2E2E')
-tasks_frame.pack(anchor='w', padx=menu_width, fill=tk.BOTH, expand=True)
+tasks_frame.pack(anchor='w', padx=(menu_width, 0), fill=tk.BOTH, expand=True)
 
 tasks_label = tk.Label(tasks_frame, text="Tasks", bg='#2E2E2E', fg='white', font=('Arial', 20, 'bold'))
 tasks_label.pack(anchor='w', pady=(0, 2))
@@ -310,16 +310,17 @@ menu_canvas.place(x=1000, y=0, relheight=1, width=menu_width)
 root.after(10, draw_menu)  # Schedule the drawing of the menu after the mainloop starts
 
 # Hamburger button in the menu frame
-hamburger_button_menu = tk.Button(menu_canvas, text="☰", bg=menu_color, fg='white', relief=tk.FLAT)
-menu_canvas.bind("<Button-1>", lambda event: hide_menu())
-hamburger_button_menu.pack(anchor='ne', pady=10, padx=10)
+hamburger_button_menu = tk.Label(menu_canvas, text="☰", bg=menu_color, fg='white', relief=tk.FLAT, font=("Arial", 18))
+hamburger_button_menu.pack(anchor='ne', pady=(10, 40), padx=10)
 root.bind('<Configure>', adjust_menu)
 
 # Add options to the menu
-options = ["Add/Change Skills", "Change Name", "View Projects"]
+options = ["Change User", "Add/Remove Skill", "Active Projects", "Assigned Tasks", "Create Project"]
 for option in options:
-    btn = tk.Button(menu_canvas, text=option, bg='#2F4F4F', fg='white', relief=tk.FLAT, anchor='w', padx=20)
-    btn.pack(fill=tk.X, pady=10)
+    btn = tk.Button(menu_canvas, text=option, bg='#2F4F4F', fg='white', relief=tk.FLAT,
+                     anchor='w', padx=20, activebackground='#1E3E3E', activeforeground='white'
+                     , font=("Arial", 10, 'bold'))
+    btn.pack(fill=tk.X, pady=0)
 
 root.mainloop()
 
