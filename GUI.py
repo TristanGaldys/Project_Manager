@@ -77,7 +77,6 @@ def tasks_canvas_click(event):
         main_frame.pack_forget()
         task_details_frame.pack(fill=tk.BOTH, expand=True)
 
-
 def canvas_click(event):
     # Get the current item under the mouse pointer
     current_item = canvas.find_withtag(tk.CURRENT)
@@ -102,17 +101,90 @@ def go_back():
     task_details_frame.pack_forget()
     main_frame.pack(fill=tk.BOTH, expand=True)
 
-def toggle_menu():
+scheduled_animation = None
+
+def slide_menu(target_x, step=True):
+    """Helper function to slide the menu_canvas."""
+    global scheduled_animation
+    if step:
+        step = menu_width/40
+    current_x = menu_canvas.winfo_x()
+    
+    if current_x == target_x:  # If already at target, stop
+        return
+
+    if target_x < current_x:  # Sliding out
+        new_x = current_x - step
+        if new_x <= target_x:
+            new_x = target_x
+            menu_canvas.place(x=new_x, y=0, relheight=1, width=menu_width)
+        else:
+            menu_canvas.place(x=new_x, y=0, relheight=1, width=menu_width)
+            scheduled_animation = root.after(10, slide_menu, target_x)
+    else:  # Sliding in
+        new_x = current_x + step
+        if new_x >= target_x:
+            new_x = target_x
+            menu_canvas.place(x=new_x, y=0, relheight=1, width=menu_width)
+        else:
+            menu_canvas.place(x=new_x, y=0, relheight=1, width=menu_width)
+            scheduled_animation = root.after(10, slide_menu, target_x)
+
+def on_menu_leave(event):
+    """Function to start closing the menu when the mouse leaves the menu."""
+    global scheduled_animation
+    if scheduled_animation:
+        root.after_cancel(scheduled_animation)
+        scheduled_animation = None
+    hide_menu()
+
+def show_menu():
+    global menu_visible
+    if not menu_visible:
+        # Target x position for the menu_canvas to slide in
+        target_x = root.winfo_width() - menu_width
+        # Start the sliding animation
+        slide_menu(target_x)
+        menu_visible = True
+
+def hide_menu():
     global menu_visible
     if menu_visible:
-        menu_frame.place_forget()  # Hide the menu
+        # Target x position for the menu_canvas to slide out
+        target_x = root.winfo_width()
+        # Start the sliding animation
+        slide_menu(target_x)
+        menu_visible = False
+
+def draw_menu():
+    # Create a rounded rectangle with the desired color
+    create_rounded_rectangle(menu_canvas, 0, 0, menu_width + 35, root.winfo_height(), 35, fill=menu_color)
+
+def adjust_menu(event=None):
+    global scheduled_animation
+    global previous_width
+    global previous_height
+    if previous_height != root.winfo_height(): 
+        draw_menu()
+        previous_height = root.winfo_height()
+    if previous_width == root.winfo_width(): return
+    previous_width = root.winfo_width()
+    if menu_visible:
+        target_x = root.winfo_width() - menu_width
     else:
-        menu_frame.place(x=root.winfo_width() - menu_width, y=0, relheight=1, width=menu_width)  # Show the menu
-    menu_visible = not menu_visible
+        target_x = root.winfo_width()
+    if scheduled_animation:  # If there's an ongoing animation, cancel it
+        root.after_cancel(scheduled_animation)
+        scheduled_animation = None
+    menu_canvas.place(x=target_x, y=0, relheight=1, width=menu_width)
+
+
 
 root = tk.Tk()
 root.geometry('1000x600')
 root.title("Project Manager")
+previous_width = root.winfo_width()
+previous_height = root.winfo_height()
 
 menu_visible = False
 menu_width = 200  # Adjusted width
@@ -138,8 +210,12 @@ content_frame = tk.Frame(root, bg='#2E2E2E')
 content_frame.pack(fill=tk.BOTH, expand=True, side=tk.LEFT)
 
 # Hamburger button in the content frame
-hamburger_button_content = tk.Button(content_frame, text="☰", command=toggle_menu, bg='#2E2E2E', fg='white', relief=tk.FLAT)
-hamburger_button_content.pack(anchor='ne', pady=10, padx=10)
+menu_button_frame = tk.Frame(content_frame,  bg='#2E2E2E')
+menu_button_frame.pack(anchor='ne', pady=10, padx=10)
+
+hamburger_button_content = tk.Button(menu_button_frame, text="☰", bg='#2E2E2E', fg='white', relief=tk.FLAT)
+hamburger_button_content.bind("<Enter>", lambda event: show_menu())
+hamburger_button_content.pack()
 
 # Main frame for projects and tasks
 main_frame = tk.Frame(content_frame, bg='#2E2E2E')
@@ -150,7 +226,7 @@ welcome_label.pack(anchor='w', pady=20, padx=200)
 
 # Frame for projects canvas
 projects_frame = tk.Frame(main_frame, bg='#2E2E2E')
-projects_frame.pack(anchor='w', padx=200, fill=tk.BOTH, expand=True)
+projects_frame.pack(anchor='w', padx=menu_width, fill=tk.BOTH, expand=True)
 
 projects_label = tk.Label(projects_frame, text="Available Projects", bg='#2E2E2E', fg='white', font=('Arial', 20, 'bold'))
 projects_label.pack(anchor='w', pady=(0, 2))
@@ -169,7 +245,7 @@ canvas.config(yscrollcommand=vbar.set)
 
 # Frame for tasks canvas
 tasks_frame = tk.Frame(main_frame, bg='#2E2E2E')
-tasks_frame.pack(anchor='w', padx=200, fill=tk.BOTH, expand=True)
+tasks_frame.pack(anchor='w', padx=menu_width, fill=tk.BOTH, expand=True)
 
 tasks_label = tk.Label(tasks_frame, text="Tasks", bg='#2E2E2E', fg='white', font=('Arial', 20, 'bold'))
 tasks_label.pack(anchor='w', pady=(0, 2))
@@ -224,18 +300,26 @@ for project_name in project_names:
         skills = [f"Skill {random.randint(1, 5)}", f"Skill {random.randint(6, 10)}"]
         task_details[task] = {'description': description, 'skills': skills}
 
+menu_color = '#2F4F4F'
 
 # Side menu
-menu_frame = tk.Frame(root, width=menu_width, bg='#4A4A4A')
+menu_canvas = tk.Canvas(root, bg='#2E2E2E', bd=0, highlightthickness=0)  # Set the background color to blue
+menu_canvas.bind("<Leave>", lambda event: hide_menu())
+menu_canvas.place(x=1000, y=0, relheight=1, width=menu_width)
+
+root.after(10, draw_menu)  # Schedule the drawing of the menu after the mainloop starts
 
 # Hamburger button in the menu frame
-hamburger_button_menu = tk.Button(menu_frame, text="☰", command=toggle_menu, bg='#4A4A4A', fg='white', relief=tk.FLAT)
+hamburger_button_menu = tk.Button(menu_canvas, text="☰", bg=menu_color, fg='white', relief=tk.FLAT)
+menu_canvas.bind("<Button-1>", lambda event: hide_menu())
 hamburger_button_menu.pack(anchor='ne', pady=10, padx=10)
+root.bind('<Configure>', adjust_menu)
 
 # Add options to the menu
 options = ["Add/Change Skills", "Change Name", "View Projects"]
 for option in options:
-    btn = tk.Button(menu_frame, text=option, bg='#5A5A5A', fg='white', relief=tk.FLAT, anchor='w', padx=20)
+    btn = tk.Button(menu_canvas, text=option, bg='#2F4F4F', fg='white', relief=tk.FLAT, anchor='w', padx=20)
     btn.pack(fill=tk.X, pady=10)
 
 root.mainloop()
+
