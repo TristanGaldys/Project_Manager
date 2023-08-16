@@ -22,7 +22,7 @@ Develop a Software, Database, API, Web page or projects related to but not limit
 5. Then choose or start any project that you are interested in.
 6. Once a Project is selected every task will have a set of skills that are required for 
 the task. 
-(*These will be only shown to you if you have 1 or more of the requried skills*)
+(*These will be only shown to you if you have 1 or more of the required skills*)
 
 ## Contributing
 
@@ -32,12 +32,12 @@ the task.
 2. Clone it to your PC
 3. Start Coding
 4. Commit
-5. Submit a PR with Issue # the pertains to your contribution (If one doesnt exist please me an Issue to link)
+5. Submit a PR with Issue # the pertains to your contribution (If one doesn't exist please me an Issue to link)
 6. Do 4-6 as many times as you'd like!
 
 
 If you would like to contribute to this project you can take a look at the Issue tab and see if there is anything you would like to take on.
 
-Dont be afraid to do anything that isnt on there we are open to new ideas and designs feel free to create issues aswell if you would like it to be looked over and approved.
+Don't be afraid to do anything that isnt on there we are open to new ideas and designs feel free to create issues as well if you would like it to be looked over and approved.
 
 Any and all contribution is welcome! Thanks for reading through and considering contributing!
