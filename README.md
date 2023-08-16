@@ -1,6 +1,6 @@
 # Project Manager
 
-![Alt text](GUI_Design\V1.png)
+![GUI Design](/GUI_Design/V1.png)
 
 **-This is still a work in Progress-**
 ---
