@@ -1,0 +1,262 @@
+<mxfile host="65bd71144e">
+    <diagram name="Page-1" id="UAb99GVwV0ab9UQRu_U6">
+        <mxGraphModel dx="1893" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-71" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#241E2B;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="-161" y="40" width="1021" height="730" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-91" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#221C29;" parent="1" vertex="1">
+                    <mxGeometry x="-161" y="40" width="1021" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-47" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3B3147;arcSize=6;" parent="1" vertex="1">
+                    <mxGeometry x="-119" y="400" width="960" height="240" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-1" value="&lt;font style=&quot;font-size: 30px;&quot; data-font-src=&quot;https://www.cssfontstack.com/Arial&quot; face=&quot;Arial&quot;&gt;Welcome to Project Manager Tristan!&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="-180" y="130" width="610" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-3" value="&lt;font color=&quot;#1193c2&quot; style=&quot;font-size: 20px;&quot; data-font-src=&quot;https://www.cssfontstack.com/Arial&quot; face=&quot;Arial&quot;&gt;&lt;u&gt;Avaliable Projects&lt;/u&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="-149" y="217" width="220" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-11" value="" style="group;fillColor=none;" parent="1" vertex="1" connectable="0">
+                    <mxGeometry x="-120" y="260" width="960" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-2" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="-BNGojG3pwg1MSGxy_rH-11" vertex="1">
+                    <mxGeometry width="960" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-5" value="&lt;font color=&quot;#1193c2&quot; style=&quot;font-size: 16px;&quot;&gt;&lt;u style=&quot;&quot;&gt;Project Manager&lt;/u&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-11" vertex="1">
+                    <mxGeometry x="10" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-6" value="&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#1a4d7a&quot;&gt;This is Project is all about Project Managment and Exploration, This project acts as Database visualizer and lets users explore what projects&lt;br&gt;&lt;/font&gt;&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#1a4d7a&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;are around and if they have valuable work they can contribute. Anyone&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;is Welcome to Contribute!&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;    " style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-11" vertex="1">
+                    <mxGeometry x="10" y="18" width="840" height="43" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-7" value="&lt;font color=&quot;#69d7ff&quot;&gt;Contributors: 3&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-11" vertex="1">
+                    <mxGeometry x="826" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-8" value="&lt;font color=&quot;#1193c2&quot;&gt;Incomplete Tasks: 15&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-11" vertex="1">
+                    <mxGeometry x="114" y="1" width="170" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-9" value="&lt;font color=&quot;#69d7ff&quot;&gt;Project Age: 5 Days&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-11" vertex="1">
+                    <mxGeometry x="819" y="16" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-10" value="&lt;font color=&quot;#69d7ff&quot;&gt;Completed Tasks: 5&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-11" vertex="1">
+                    <mxGeometry x="819" y="32" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-12" value="" style="group" parent="1" vertex="1" connectable="0">
+                    <mxGeometry x="-119" y="330" width="960" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-13" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;" parent="-BNGojG3pwg1MSGxy_rH-12" vertex="1">
+                    <mxGeometry width="960" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-14" value="&lt;font color=&quot;#1193c2&quot; style=&quot;font-size: 16px;&quot;&gt;&lt;u style=&quot;&quot;&gt;Project Manager&lt;/u&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-12" vertex="1">
+                    <mxGeometry x="10" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-15" value="&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#1a4d7a&quot;&gt;This is Project is all about Project Managment and Exploration, This project acts as Database visualizer and lets users explore what projects&lt;br&gt;&lt;/font&gt;&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#1a4d7a&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;are around and if they have valuable work they can contribute. Anyone&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;is Welcome to Contribute!&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;    " style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-12" vertex="1">
+                    <mxGeometry x="10" y="18" width="840" height="43" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-16" value="&lt;font color=&quot;#69d7ff&quot;&gt;Contributors: 3&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-12" vertex="1">
+                    <mxGeometry x="826" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-17" value="&lt;font color=&quot;#1193c2&quot;&gt;Incomplete Tasks: 15&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-12" vertex="1">
+                    <mxGeometry x="114" y="1" width="170" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-18" value="&lt;font color=&quot;#69d7ff&quot;&gt;Project Age: 5 Days&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-12" vertex="1">
+                    <mxGeometry x="819" y="16" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-19" value="&lt;font color=&quot;#69d7ff&quot;&gt;Completed Tasks: 5&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-12" vertex="1">
+                    <mxGeometry x="819" y="32" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-29" value="" style="group" parent="1" vertex="1" connectable="0">
+                    <mxGeometry x="-119" y="400" width="960" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-21" value="" style="rounded=1;whiteSpace=wrap;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="-BNGojG3pwg1MSGxy_rH-29" vertex="1">
+                    <mxGeometry width="960" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-22" value="&lt;font color=&quot;#1193c2&quot; style=&quot;font-size: 16px;&quot;&gt;&lt;u style=&quot;&quot;&gt;Project Manager&lt;/u&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="-BNGojG3pwg1MSGxy_rH-29" vertex="1">
+                    <mxGeometry x="10" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-23" value="&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#1a4d7a&quot;&gt;This is Project is all about Project Managment and Exploration, This project acts as Database visualizer and lets users explore what projects&lt;br&gt;&lt;/font&gt;&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#1a4d7a&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;are around and if they have valuable work they can contribute. Anyone&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;is Welcome to Contribute!&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;    " style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="-BNGojG3pwg1MSGxy_rH-29" vertex="1">
+                    <mxGeometry x="10" y="18" width="840" height="43" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-24" value="&lt;font color=&quot;#69d7ff&quot;&gt;Contributors: 3&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="-BNGojG3pwg1MSGxy_rH-29" vertex="1">
+                    <mxGeometry x="826" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-25" value="&lt;font color=&quot;#1193c2&quot;&gt;Incomplete Tasks: 15&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="-BNGojG3pwg1MSGxy_rH-29" vertex="1">
+                    <mxGeometry x="114" y="1" width="170" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-26" value="&lt;font color=&quot;#69d7ff&quot;&gt;Project Age: 5 Days&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="-BNGojG3pwg1MSGxy_rH-29" vertex="1">
+                    <mxGeometry x="819" y="16" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-27" value="&lt;font color=&quot;#69d7ff&quot;&gt;Completed Tasks: 5&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="-BNGojG3pwg1MSGxy_rH-29" vertex="1">
+                    <mxGeometry x="819" y="32" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-46" value="" style="group" parent="1" vertex="1" connectable="0">
+                    <mxGeometry x="-115" y="462" width="950" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-30" value="" style="rounded=1;whiteSpace=wrap;html=1;container=0;" parent="-BNGojG3pwg1MSGxy_rH-46" vertex="1">
+                    <mxGeometry y="3" width="950" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-32" value="Create Database" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-46" vertex="1">
+                    <mxGeometry x="4" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-33" value="Assigned to: Dragan" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-46" vertex="1">
+                    <mxGeometry x="824" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-34" value="Required Skills: SQL" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-46" vertex="1">
+                    <mxGeometry x="130" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-35" value="Deadline: August 18th" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-46" vertex="1">
+                    <mxGeometry x="814" y="14" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-36" value="The Database's primary goal is to hold all the data about a user's skills and all the projects available. These projects would have many tasks that require specific skill sets. The Task ..." style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;container=0;fontSize=10;" parent="-BNGojG3pwg1MSGxy_rH-46" vertex="1">
+                    <mxGeometry x="4" y="19" width="819" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-48" value="" style="group" parent="1" vertex="1" connectable="0">
+                    <mxGeometry x="-115" y="505" width="950" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-49" value="" style="rounded=1;whiteSpace=wrap;html=1;container=0;" parent="-BNGojG3pwg1MSGxy_rH-48" vertex="1">
+                    <mxGeometry y="3" width="950" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-50" value="Create Database" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-48" vertex="1">
+                    <mxGeometry x="4" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-51" value="Assigned to: Dragan" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-48" vertex="1">
+                    <mxGeometry x="824" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-52" value="Required Skills: SQL" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-48" vertex="1">
+                    <mxGeometry x="130" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-53" value="Deadline: August 18th" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-48" vertex="1">
+                    <mxGeometry x="814" y="14" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-54" value="The Database's primary goal is to hold all the data about a user's skills and all the projects available. These projects would have many tasks that require specific skill sets. The Task ..." style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;container=0;fontSize=10;" parent="-BNGojG3pwg1MSGxy_rH-48" vertex="1">
+                    <mxGeometry x="4" y="19" width="819" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-55" value="" style="group" parent="1" vertex="1" connectable="0">
+                    <mxGeometry x="-115" y="548" width="950" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-56" value="" style="rounded=1;whiteSpace=wrap;html=1;container=0;" parent="-BNGojG3pwg1MSGxy_rH-55" vertex="1">
+                    <mxGeometry y="3" width="950" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-57" value="Create Database" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-55" vertex="1">
+                    <mxGeometry x="4" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-58" value="Assigned to: Dragan" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-55" vertex="1">
+                    <mxGeometry x="824" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-59" value="Required Skills: SQL" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-55" vertex="1">
+                    <mxGeometry x="130" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-60" value="Deadline: August 18th" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-55" vertex="1">
+                    <mxGeometry x="814" y="14" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-61" value="The Database's primary goal is to hold all the data about a user's skills and all the projects available. These projects would have many tasks that require specific skill sets. The Task ..." style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;container=0;fontSize=10;" parent="-BNGojG3pwg1MSGxy_rH-55" vertex="1">
+                    <mxGeometry x="4" y="19" width="819" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-62" value="" style="group" parent="1" vertex="1" connectable="0">
+                    <mxGeometry x="-115" y="591" width="950" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-63" value="" style="rounded=1;whiteSpace=wrap;html=1;container=0;" parent="-BNGojG3pwg1MSGxy_rH-62" vertex="1">
+                    <mxGeometry y="3" width="950" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-64" value="Create Database" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-62" vertex="1">
+                    <mxGeometry x="4" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-65" value="Assigned to: Dragan" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-62" vertex="1">
+                    <mxGeometry x="824" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-66" value="Required Skills: SQL" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-62" vertex="1">
+                    <mxGeometry x="130" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-67" value="Deadline: August 18th" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="-BNGojG3pwg1MSGxy_rH-62" vertex="1">
+                    <mxGeometry x="814" y="14" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-68" value="The Database's primary goal is to hold all the data about a user's skills and all the projects available. These projects would have many tasks that require specific skill sets. The Task ..." style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;container=0;fontSize=10;" parent="-BNGojG3pwg1MSGxy_rH-62" vertex="1">
+                    <mxGeometry x="4" y="19" width="819" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-72" value="" style="group;fillColor=none;" parent="1" vertex="1" connectable="0">
+                    <mxGeometry x="-120" y="653" width="960" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-73" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="-BNGojG3pwg1MSGxy_rH-72" vertex="1">
+                    <mxGeometry width="960" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-74" value="&lt;font color=&quot;#1193c2&quot; style=&quot;font-size: 16px;&quot;&gt;&lt;u style=&quot;&quot;&gt;Project Manager&lt;/u&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-72" vertex="1">
+                    <mxGeometry x="10" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-75" value="&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#1a4d7a&quot;&gt;This is Project is all about Project Managment and Exploration, This project acts as Database visualizer and lets users explore what projects&lt;br&gt;&lt;/font&gt;&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#1a4d7a&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;are around and if they have valuable work they can contribute. Anyone&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;is Welcome to Contribute!&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;    " style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-72" vertex="1">
+                    <mxGeometry x="10" y="18" width="840" height="43" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-76" value="&lt;font color=&quot;#69d7ff&quot;&gt;Contributors: 3&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-72" vertex="1">
+                    <mxGeometry x="826" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-77" value="&lt;font color=&quot;#1193c2&quot;&gt;Incomplete Tasks: 15&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-72" vertex="1">
+                    <mxGeometry x="114" y="1" width="170" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-78" value="&lt;font color=&quot;#69d7ff&quot;&gt;Project Age: 5 Days&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-72" vertex="1">
+                    <mxGeometry x="819" y="16" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-79" value="&lt;font color=&quot;#69d7ff&quot;&gt;Completed Tasks: 5&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-72" vertex="1">
+                    <mxGeometry x="819" y="32" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-80" value="" style="group;fillColor=none;" parent="1" vertex="1" connectable="0">
+                    <mxGeometry x="-120" y="723" width="960" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-81" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="-BNGojG3pwg1MSGxy_rH-80" vertex="1">
+                    <mxGeometry width="960" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-82" value="&lt;font color=&quot;#1193c2&quot; style=&quot;font-size: 16px;&quot;&gt;&lt;u style=&quot;&quot;&gt;Project Manager&lt;/u&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-80" vertex="1">
+                    <mxGeometry x="10" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-83" value="&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#1a4d7a&quot;&gt;This is Project is all about Project Managment and Exploration, This project acts as Database visualizer and lets users explore what projects&lt;br&gt;&lt;/font&gt;&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#1a4d7a&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;are around and if they have valuable work they can contribute. Anyone&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;is Welcome to Contribute!&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;    " style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-80" vertex="1">
+                    <mxGeometry x="10" y="18" width="840" height="43" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-84" value="&lt;font color=&quot;#69d7ff&quot;&gt;Contributors: 3&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-80" vertex="1">
+                    <mxGeometry x="826" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-85" value="&lt;font color=&quot;#1193c2&quot;&gt;Incomplete Tasks: 15&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-80" vertex="1">
+                    <mxGeometry x="114" y="1" width="170" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-86" value="&lt;font color=&quot;#69d7ff&quot;&gt;Project Age: 5 Days&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-80" vertex="1">
+                    <mxGeometry x="819" y="16" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-87" value="&lt;font color=&quot;#69d7ff&quot;&gt;Completed Tasks: 5&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="-BNGojG3pwg1MSGxy_rH-80" vertex="1">
+                    <mxGeometry x="819" y="32" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-89" value="&lt;div style=&quot;background-color: rgb(31, 31, 31); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-weight: normal; line-height: 19px;&quot;&gt;&lt;div style=&quot;&quot;&gt;&lt;font color=&quot;#ffffff&quot; style=&quot;font-size: 24px;&quot;&gt;☰&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="805" y="48" width="50" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-92" value="🔎 Search For Projects" style="rounded=1;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="518" y="223.5" width="320" height="23" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-93" value="Explore" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="-133" y="174" width="115" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-94" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#006EAF;strokeWidth=2;fillColor=#1ba1e2;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="-120" y="200" as="sourcePoint"/>
+                        <mxPoint x="-30" y="200" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-100" value="Your Projects" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="-43" y="174" width="115" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-101" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#1A1620;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="-30" y="200" as="sourcePoint"/>
+                        <mxPoint x="60" y="200" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-102" value="Your Tasks" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="46" y="174" width="115" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="-BNGojG3pwg1MSGxy_rH-103" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#1A1620;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="59" y="200" as="sourcePoint"/>
+                        <mxPoint x="149" y="200" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

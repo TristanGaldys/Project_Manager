@@ -1,4 +1,7 @@
 # Project Manager
+
+![Alt text](GUI_Design\V1.png)
+
 **-This is still a work in Progress-**
 ---
 The goal of this project is to create an Application that will be used to view Manage Projects and work with an easy to use method.
@@ -9,6 +12,7 @@ Anyone, who would be interested, to join and participate in team effort and work
 Develop a Software, Database, API, Web page or projects related to but not limited with Data Science. 
 
 ## Project Overview
+
 ### Starting with the Finished Product:
 
 1. To use this Project you would:

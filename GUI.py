@@ -5,6 +5,7 @@ import random
 # Dictionary to store tasks for each project and details for each task
 project_tasks = {}
 task_details = {}
+scheduled_animation = None
 
 def create_rounded_rectangle(canvas, x1, y1, x2, y2, corner_radius, **kwargs):
     # Draw the main rectangle
@@ -100,8 +101,6 @@ def go_back():
     # Hide task details frame and show main frame
     task_details_frame.pack_forget()
     main_frame.pack(fill=tk.BOTH, expand=True)
-
-scheduled_animation = None
 
 def slide_menu(target_x, step=True):
     """Helper function to slide the menu_canvas."""
