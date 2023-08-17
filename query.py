@@ -76,6 +76,61 @@ def complete_task(project, task):
     """
     pass
 
+def project_info(project):
+    """
+    This functionw takes in a project_id and returns data in the following format
+
+    param: project: This is the Primary Key of the project in the database
+    type: int
+
+    return: project_info: format below
+    project_info:
+    [0] : Project description
+    [1] : Incompleted Tasks
+    [2] : Completed Tasks
+    [3] : Contributors
+    [4] : Age in days
+    type: list
+    """
+    project_info = [""]
+    return project_info
+
+def project_tasks(project, skill= None):
+    """
+    This function give the task id with the associated project
+    In the future would be nice if it could only give tasks with the required skill that is entered
+
+    param: project: This is the Primary Key of the project in the database
+    type: int
+
+    param: skill: This is the skill that is checked for if it is not None
+    type: String
+
+    return: task_ids: This is a list of task ids [1,2,3,4]
+    type: list
+    """
+    task_ids = []
+    return task_ids
+
+def task_info(task):
+    """
+    This function takes in the task id and will return a list of task data
+
+    param: task: This is the primary key of the task
+    type: int
+
+    return: task_data: This is a  list that is in the given format
+    task_data:
+    [0] : Task
+    [1] : Task Description
+    [2] : Required Skills
+    [3] : Deadline
+    [4] : Assigned User (In String form)
+    type: list
+    """
+    task_data = [""]
+    return task_data
+
 user_to_verify = "John Doe"
 if verify_user(user_to_verify):
     print(f"User '{user_to_verify}' exists.")
