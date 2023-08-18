@@ -2,19 +2,6 @@
 This will be the file that all database information will be pulled from
 
 These function below are a few of the required functions for this application to work
-
-These require a bit of a change of the database
-New collumns in projects:
-    DOB (Start date)
-    description
-    completed tasks (these should just hold IDs to link to task table)
-    incomplete tasks (these should just hold IDs to link to task table)
-
-New Table for tasks:
-    assigned user
-    description
-    deadline
-    required skills
 """
 import sqlite3
 

@@ -4,6 +4,14 @@ from tkinter import font as tkFont
 
 prev_width = 0
 selected = None
+canvas = None
+selected_tab = "Login"
+explore = None
+canvas = None
+main_canvas = None
+top_frame = None
+entry = None
+header_canvas = None
 
 def create_rounded_rectangle(canvas, x1, y1, x2, y2, corner_radius, **kwargs):
     # Draw the main rectangle
@@ -305,9 +313,13 @@ def update_scale():
     global prev_width
     if root.winfo_width() != prev_width:
         prev_width = root.winfo_width()
-        entry.pack(side='left', padx=(prev_width-500, 10))
-        main_canvas.config(width=root.winfo_width())
-        display_all_proj(main_canvas)
+        if selected_tab == 'Login': 
+            canvas.config(width=root.winfo_width())
+            login()
+        elif selected_tab == 'Explore':
+            entry.pack(side='left', padx=(prev_width-500, 10))
+            main_canvas.config(width=root.winfo_width())
+            display_all_proj(main_canvas)
 
 def on_mousewheel(event, canvas):
     """
@@ -319,28 +331,33 @@ def button_selected(button):
     """
     This allows the function to have a visual of which button is selected
     """
-    x1, y1, x2, y2 = button.winfo_x(), button.winfo_y() + button.winfo_height(), button.winfo_x() + button.winfo_width(), button.winfo_y() + button.winfo_height() - 2
-    canvas.delete("selected")
-    canvas.create_line(x1, 0, x2, 0, fill="blue", width=4, tag= 'selected')
+    x1, x2 = button.winfo_x(), button.winfo_x() + button.winfo_width()
+    if x1 == 0  and x2 == 1: 
+        canvas.create_line(392, 0, 496, 0, fill="blue", width=4, tag= 'selected')
+    else:
+        canvas.delete("selected")
+        canvas.create_line(x1, 0, x2, 0, fill="blue", width=4, tag= 'selected')
 
 def header_buttons():
+    global explore
     explore = tk.Button(
         header_canvas,
         text="Explore",
         bg='#18141D',
-        activebackground='#2C2634',  # Change to the color you prefer
+        activebackground='#2C2634',  
         fg='#5C596D',
         font=('Arial', 12, 'bold'),
         borderwidth=0,
         highlightthickness=0,
         width = 10 
     )
+    explore.bind("<Button-1>", lambda event: explore_canvas())
 
     u_projects = tk.Button(
         header_canvas,
         text="Your Projects",
         bg='#18141D',
-        activebackground='#2C2634',  # Change to the color you prefer
+        activebackground='#2C2634',
         fg='#5C596D',
         font=('Arial', 12, 'bold'),
         borderwidth=0,
@@ -352,7 +369,7 @@ def header_buttons():
         header_canvas,
         text="Your Tasks",
         bg='#18141D',
-        activebackground='#2C2634',  # Change to the color you prefer
+        activebackground='#2C2634', 
         fg='#5C596D',
         font=('Arial', 12, 'bold'),
         borderwidth=0,
@@ -362,8 +379,8 @@ def header_buttons():
     explore.pack(anchor='w', pady=(20, 0), padx=(20, 0), side='left')
     u_projects.pack(anchor='w', pady=(20, 0), padx=(20, 0), side='left')
     u_tasks.pack(anchor='w', pady=(20, 0), padx=(20, 0), side='left')
+    
 
-    explore.bind("<Button-1>", lambda event: button_selected(explore))
     u_projects.bind("<Button-1>", lambda event: button_selected(u_projects))
     u_tasks.bind("<Button-1>", lambda event: button_selected(u_tasks))
 
@@ -380,49 +397,168 @@ def restore_placeholder(event):
 def on_var_change(*args):
     print(entry_var.get())
 
+def authenticate(username, password):
+    if username == "admin" and password == "password":
+        return True
+    return False
+
+def login():
+    global selected_tab, header_canvas, canvas
+    if not hasattr(header_canvas, "Login"):
+        header_canvas.Login = tk.Button(
+            header_canvas,
+            text="Login",
+            bg='#18141D',
+            activebackground='#2C2634', 
+            fg='#5C596D',
+            font=('Arial', 12, 'bold'),
+            borderwidth=0,
+            highlightthickness=0,
+            width = 10 
+        )
+        header_canvas.Login.pack(anchor='w', pady=(20, 0), padx=(20, 0), side='left')
+
+    selected_tab = "Login"
+    canvas.pack_forget()
+    canvas = tk.Canvas(root, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    header_canvas.Login.bind("<Button-1>", lambda event: login())
+
+    create_rounded_rectangle(canvas, prev_width/2 -250, 20, prev_width/2 +250, root.winfo_height()-200, 25, fill= '#241E2B', outline = '#5C596D', width= 4)
+    
+    fail_label = tk.Label(canvas, text="", bg='#241E2B', fg='red', font=('Arial', 12))
+    fail_label.place(rely= 0.3, x= prev_width/2 -50)
+
+    # Sign in message
+    sign = tk.Label(canvas, text="Sign In", bg='#241E2B', fg='white', font=('Arial', 18, 'bold'))
+    sign.place(relx = .5, rely=0.25, anchor='c')
+
+    # Username label & entry
+    username_label = tk.Label(canvas, text="Username:", bg='#241E2B', fg='white')
+    username_label.place(x= prev_width/2 -150, rely=0.4, anchor='e')
+
+    username_entry = tk.Entry(canvas, 
+                            fg='white', 
+                            font=('Arial', 12), 
+                            bg="#282828", 
+                            width=40, 
+                            bd=0, 
+                            highlightbackground='#241E2B', 
+                            highlightthickness=3)
+    username_entry.place(x= prev_width/2 -150, rely=0.4, anchor='w')
+
+    # Password label & entry
+    password_label = tk.Label(canvas, text="Password:", bg='#241E2B', fg='white')
+    password_label.place(x= prev_width/2 - 150, rely=0.5, anchor='e')
+
+    password_entry = tk.Entry(canvas, 
+                            show="*", 
+                            fg='white', 
+                            font=('Arial', 12), 
+                            bg="#282828", 
+                            width=40, 
+                            bd=0, 
+                            highlightbackground='#241E2B', 
+                            highlightthickness=3)
+    password_entry.place(x= prev_width/2 - 150, rely=0.5, anchor='w')
+
+    def back_to_start():
+        global selected_tab
+        header_canvas.Login.destroy()
+        canvas.pack_forget()
+        explore_canvas()
+
+
+    def on_submit():
+        global canvas
+        user = username_entry.get()
+        pwd = password_entry.get()
+
+        if authenticate(user, pwd):
+            for widget in canvas.winfo_children():
+                widget.destroy()
+            success_label = tk.Label(canvas, text="Successfully Logged In!", bg='#241E2B', fg='white', font=('Arial', 14))
+            success_label.place(relx=0.5, rely=0.5, anchor='c')
+            canvas.after(1000, back_to_start)
+        else:
+            fail_label.config(text="Failed to login")
+
+    submit_button = ttk.Button(canvas, text="Submit", command=on_submit)
+    submit_button.place(relx=0.5, rely=0.65, anchor='c')
+    button_selected(header_canvas.Login)
+    #"""
+
+def explore_canvas():
+    global canvas, main_canvas, selected_tab, top_frame, entry
+    if selected_tab == 'explore':
+        pass
+    selected_tab = 'explore'
+    canvas.pack_forget()
+
+    canvas = tk.Canvas(root, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    # Create a top frame to contain the 'avail' label and 'entry' widget
+    top_frame = tk.Frame(canvas, bg='#241E2B')
+    top_frame.pack(pady=20, fill='x')  # pad in the y direction to provide spacing
+
+    avail = tk.Label(top_frame, text="Available Projects", bg='#241E2B', fg='white', font=('Arial', 18, 'bold'))
+    avail.pack(side='left', padx=20)
+
+    # Create a StringVar for your entry
+    entry_var = tk.StringVar()
+    entry_var.set("🔍 Search For Projects")  # initial value
+
+    # Set a trace on the StringVar
+    entry_var.trace_add("write", on_var_change)
+
+    entry = tk.Entry(top_frame, textvariable=entry_var, fg='white', font=('Arial', 12), bg="#282828", width=40, bd=0, highlightbackground='#18141D', highlightthickness=3)
+    entry.pack(side='left', padx=(500,0))
+
+    main_canvas = tk.Canvas(canvas, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
+    main_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(20,0))
+
+    main_canvas.bind("<MouseWheel>", lambda event, canvas=main_canvas: on_mousewheel(event, canvas))
+    main_canvas.bind("<Button-1>", lambda event: main_canvas_click(event))
+    entry.bind("<FocusIn>", remove_placeholder)
+    entry.bind("<FocusOut>", restore_placeholder)
+
+    display_all_proj(main_canvas)
+    button_selected(explore)
+
 root = tk.Tk()
 root.geometry('1000x600')
 root.minsize(1000,600)
 root.title("Project Manager")
+root.bind("<Configure>", lambda event: update_scale() if event.widget == root else None)
 
 style = ttk.Style()
 style.theme_use('clam')
 
+entry_var = tk.StringVar()
+
 header_canvas = tk.Canvas(root, bg='#18141D', bd=0, highlightthickness=0, width=1000, height=120)
 header_canvas.pack(side=tk.TOP, fill=tk.BOTH)
 
+
+menu_button = tk.Button(
+        header_canvas,
+        text="☰",
+        bg='#18141D',
+        activebackground='#2C2634',
+        fg='white',
+        font=('Arial', 18, 'bold'),
+        borderwidth=0,
+        highlightthickness=0,
+    )
+menu_button.pack(anchor='ne', padx=10, pady=10)
+
 welcome = tk.Label(header_canvas, text="Welcome to Project Manager!", bg='#18141D', fg='white', font=('Arial', 30, 'bold'))
-welcome.pack(anchor='w', pady =(80, 0), padx= 20)
+welcome.pack(anchor='w', pady =(10, 0), padx= 20)
 
 canvas = tk.Canvas(root, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
-canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
-# Create a top frame to contain the 'avail' label and 'entry' widget
-top_frame = tk.Frame(canvas, bg='#241E2B')
-top_frame.pack(pady=20, fill='x')  # pad in the y direction to provide spacing
-
-avail = tk.Label(top_frame, text="Available Projects", bg='#241E2B', fg='white', font=('Arial', 18, 'bold'))
-avail.pack(side='left', padx=20)
-
-# Create a StringVar for your entry
-entry_var = tk.StringVar()
-entry_var.set("🔍 Search For Projects")  # initial value
-
-# Set a trace on the StringVar
-entry_var.trace_add("write", on_var_change)
-
-entry = tk.Entry(top_frame, textvariable=entry_var, fg='white', font=('Arial', 12), bg="#241E2B", width=40, bd=0, highlightbackground='#18141D', highlightthickness=3)
-entry.pack(side='left', padx=(500,0))
-
-main_canvas = tk.Canvas(canvas, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
-main_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(20,0))
-
-main_canvas.bind("<MouseWheel>", lambda event, canvas=main_canvas: on_mousewheel(event, canvas))
-main_canvas.bind("<Button-1>", lambda event: main_canvas_click(event))
-root.bind("<Configure>", lambda event: update_scale() if event.widget == root else None)
-entry.bind("<FocusIn>", remove_placeholder)
-entry.bind("<FocusOut>", restore_placeholder)
 
 header_buttons()
-canvas.create_line(20, 0, 124, 0, fill="blue", width=4, tag= 'selected')
+login()
+
 root.mainloop()
