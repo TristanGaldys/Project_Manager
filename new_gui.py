@@ -490,9 +490,10 @@ def login():
 
 def explore_canvas():
     global canvas, main_canvas, selected_tab, top_frame, entry
-    if selected_tab == 'explore':
-        pass
-    selected_tab = 'explore'
+    print(selected_tab)
+    if selected_tab == 'Explore':
+        return
+    selected_tab = 'Explore'
     canvas.pack_forget()
 
     canvas = tk.Canvas(root, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
@@ -513,7 +514,7 @@ def explore_canvas():
     entry_var.trace_add("write", on_var_change)
 
     entry = tk.Entry(top_frame, textvariable=entry_var, fg='white', font=('Arial', 12), bg="#282828", width=40, bd=0, highlightbackground='#18141D', highlightthickness=3)
-    entry.pack(side='left', padx=(500,0))
+    entry.pack(side='left', padx=(prev_width-500, 10))
 
     main_canvas = tk.Canvas(canvas, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
     main_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(20,0))
@@ -539,7 +540,6 @@ entry_var = tk.StringVar()
 
 header_canvas = tk.Canvas(root, bg='#18141D', bd=0, highlightthickness=0, width=1000, height=120)
 header_canvas.pack(side=tk.TOP, fill=tk.BOTH)
-
 
 menu_button = tk.Button(
         header_canvas,
