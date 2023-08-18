@@ -182,10 +182,10 @@ def display_project(canvas, project, y= 0):
 
     #Determining how much space to give on the right side
     font = tkFont.Font(font=("Arial", 12, 'bold'))
-    right_offset = get_longest(["Contributors: " + project_info()[3], "Project Age: " + project_info()[4], "Completed Tasks: " + project_info()[2]],font)+20
+    right_offset = get_longest(["Contributors: " + project_info()[3], "Project Age: " + project_info()[4], "Completed Tasks: " + project_info()[2]],font)+50
 
     #Creating background for the project
-    create_rounded_rectangle(canvas, 10, y, root.winfo_width()-10, y+90, 20, outline= '#FFFFFF', fill='#18141C', tag=project)
+    create_rounded_rectangle(canvas, 10, y, root.winfo_width()-40, y+90, 20, outline= '#FFFFFF', fill='#18141C', tag=project)
     y+= 20
 
     #font for measurement
@@ -233,28 +233,28 @@ def display_task(canvas, task, y =0):
     font = tkFont.Font(font=("Arial", 10, 'bold')) #most used font
 
     #Determining how much space to give on the right side
-    right_offset = get_longest(["Assigned to: " + task_info(task)[4], "Deadline: " +  task_info(task)[3]],font)
+    right_offset = get_longest(["Assigned to: " + task_info(task)[4], "Deadline: " +  task_info(task)[3]],font) +60
 
     #Determining how much space there is to write the required skills
     skill_space = root.winfo_width() - right_offset - tkFont.Font(font=("Arial", 12, 'bold')).measure(task_info(task)[0]) -100
     skill = wrap_text("Required Skills: " + task_info(task)[2], font, skill_space, 1)
 
     #Creating the Task background
-    create_rounded_rectangle(canvas, 20, y, root.winfo_width()-20, y+50, 15, outline= '#FFFFFF', fill='#18141C', tag="task_"+str(task))
+    create_rounded_rectangle(canvas, 20, y, root.winfo_width()-50, y+50, 15, outline= '#FFFFFF', fill='#18141C', tag="task_"+str(task))
     
     y+= 15 # Moving down to the first line of text
     #Writing Task Name
     canvas.create_text(30, y, text = task_info(task)[0], anchor='w', font=("Arial", 12, 'bold'), tag="task_"+str(task), fill = '#69D7FF')
     #Writing Assigned User 
-    canvas.create_text(root.winfo_width()-right_offset -30, y, text = "Assigned to: " + task_info(task)[4], anchor='w', font=font, tag="task_"+str(task), fill = '#69D7FF')
+    canvas.create_text(root.winfo_width()-right_offset, y, text = "Assigned to: " + task_info(task)[4], anchor='w', font=font, tag="task_"+str(task), fill = '#69D7FF')
     #Writng the Required Skills
     canvas.create_text(tkFont.Font(font=("Arial", 12, 'bold')).measure(task_info(task)[0])+ 50, y, text = skill, anchor='w', font=font, tag="task_"+str(task), fill = '#69B1EE')
 
     y+= 20 #Moving down to second line of text
     #Wrinting down the task description
-    canvas.create_text(30, y, text = wrap_text(task_info(task)[1], font, root.winfo_width()-right_offset -100, 1), anchor='w', font=font, tag="task_"+str(task), fill = '#1193C2')
+    canvas.create_text(30, y, text = wrap_text(task_info(task)[1], font, root.winfo_width()-right_offset -140, 1), anchor='w', font=font, tag="task_"+str(task), fill = '#1193C2')
     #Writing the deadline down
-    canvas.create_text(root.winfo_width()-right_offset -30, y, text = "Deadline: " +  task_info(task)[3], anchor='w', font=font, tag="task_"+str(task), fill = '#69D7FF')
+    canvas.create_text(root.winfo_width()-right_offset, y, text = "Deadline: " +  task_info(task)[3], anchor='w', font=font, tag="task_"+str(task), fill = '#69D7FF')
 
     y+= 15 #moving the y to the bottom of the task section 
     return y
@@ -271,7 +271,7 @@ def display_proj_tasks(canvas, project, y = 0):
     if len(tasks) > 4: tasks = tasks[0:4]
 
     #Creates the "Dropdown"
-    create_rounded_rectangle(canvas, 10, y, root.winfo_width()-10, y + 95 + len(tasks)*55, 20, outline= '#FFFFFF', fill='#3B3147', tag="taskdrop")
+    create_rounded_rectangle(canvas, 10, y, root.winfo_width()-40, y + 95 + len(tasks)*55, 20, outline= '#FFFFFF', fill='#3B3147', tag="taskdrop")
 
     #Displays the Project
     y = display_project(canvas, project, y)
@@ -392,7 +392,7 @@ header_canvas = tk.Canvas(root, bg='#18141D', bd=0, highlightthickness=0, width=
 header_canvas.pack(side=tk.TOP, fill=tk.BOTH)
 
 welcome = tk.Label(header_canvas, text="Welcome to Project Manager!", bg='#18141D', fg='white', font=('Arial', 30, 'bold'))
-welcome.pack(anchor='w', pady =(80, 0), padx= 10)
+welcome.pack(anchor='w', pady =(80, 0), padx= 20)
 
 canvas = tk.Canvas(root, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
 canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -415,7 +415,7 @@ entry = tk.Entry(top_frame, textvariable=entry_var, fg='white', font=('Arial', 1
 entry.pack(side='left', padx=(500,0))
 
 main_canvas = tk.Canvas(canvas, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
-main_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+main_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(20,0))
 
 main_canvas.bind("<MouseWheel>", lambda event, canvas=main_canvas: on_mousewheel(event, canvas))
 main_canvas.bind("<Button-1>", lambda event: main_canvas_click(event))
