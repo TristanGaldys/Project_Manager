@@ -252,17 +252,17 @@ def display_task(canvas, task, y =0):
     
     y+= 15 # Moving down to the first line of text
     #Writing Task Name
-    canvas.create_text(30, y, text = task_info(task)[0], anchor='w', font=("Arial", 12, 'bold'), tag="task_"+str(task), fill = '#69D7FF')
+    canvas.create_text(30, y, text = task_info(task)[0], anchor='w', font=("Arial", 12, 'bold'), tag="task_"+str(task), fill = '#FFFFFF')
     #Writing Assigned User 
-    canvas.create_text(root.winfo_width()-right_offset, y, text = "Assigned to: " + task_info(task)[4], anchor='w', font=font, tag="task_"+str(task), fill = '#69D7FF')
+    canvas.create_text(root.winfo_width()-right_offset, y, text = "Assigned to: " + task_info(task)[4], anchor='w', font=font, tag="task_"+str(task), fill = '#FFFFFF')
     #Writng the Required Skills
-    canvas.create_text(tkFont.Font(font=("Arial", 12, 'bold')).measure(task_info(task)[0])+ 50, y, text = skill, anchor='w', font=font, tag="task_"+str(task), fill = '#69B1EE')
+    canvas.create_text(tkFont.Font(font=("Arial", 12, 'bold')).measure(task_info(task)[0])+ 50, y, text = skill, anchor='w', font=font, tag="task_"+str(task), fill = '#FFFFFF')
 
     y+= 20 #Moving down to second line of text
     #Wrinting down the task description
-    canvas.create_text(30, y, text = wrap_text(task_info(task)[1], font, root.winfo_width()-right_offset -140, 1), anchor='w', font=font, tag="task_"+str(task), fill = '#1193C2')
+    canvas.create_text(30, y, text = wrap_text(task_info(task)[1], font, root.winfo_width()-right_offset -140, 1), anchor='w', font=font, tag="task_"+str(task), fill = '#FFFFFF')
     #Writing the deadline down
-    canvas.create_text(root.winfo_width()-right_offset, y, text = "Deadline: " +  task_info(task)[3], anchor='w', font=font, tag="task_"+str(task), fill = '#69D7FF')
+    canvas.create_text(root.winfo_width()-right_offset, y, text = "Deadline: " +  task_info(task)[3], anchor='w', font=font, tag="task_"+str(task), fill = '#FFFFFF')
 
     y+= 15 #moving the y to the bottom of the task section 
     return y
@@ -312,6 +312,8 @@ def update_scale():
     """
     global prev_width
     if root.winfo_width() != prev_width:
+        update_scrolling()
+        tab_canvas.config(width=root.winfo_width()-500)
         prev_width = root.winfo_width()
         if selected_tab == 'Login': 
             canvas.config(width=root.winfo_width())
@@ -321,27 +323,45 @@ def update_scale():
             main_canvas.config(width=root.winfo_width())
             display_all_proj(main_canvas)
 
-def on_mousewheel(event, canvas):
+def on_mousewheel(event, canvas, direction = 'y'):
     """
     This allows the canvas to be scrolled through
     """
-    canvas.yview_scroll(-1*(event.delta//120), "units")
-
+    if direction == 'y':
+        canvas.yview_scroll(-1*(event.delta//120), "units")
+    else:
+        canvas.xview_scroll(-1*(event.delta//120), "units")
+        
 def button_selected(button):
     """
     This allows the function to have a visual of which button is selected
     """
     x1, x2 = button.winfo_x(), button.winfo_x() + button.winfo_width()
-    if x1 == 0  and x2 == 1: 
-        canvas.create_line(392, 0, 496, 0, fill="blue", width=4, tag= 'selected')
+    
+    # Get the current x-scroll position of the canvas
+    scroll_x1, scroll_x2 = tab_canvas.xview()
+    canvas_width = tab_canvas.winfo_width()
+    
+    # Calculate the actual visible region of the canvas in terms of content coordinates
+    visible_x1 = scroll_x1 * canvas_width
+    visible_x2 = scroll_x2 * canvas_width
+    
+    # Check if the button's x-coordinates are outside the visible region
+    if x1 < visible_x1 or x2 > visible_x2:
+        tab_canvas.xview_moveto(x1 / canvas_width)
+    
+    if x1 == 0 and x2 == 1: 
+        tab_canvas.create_line(563, 45, 667, 45, fill="blue", width=4, tag='selected')
     else:
-        canvas.delete("selected")
-        canvas.create_line(x1, 0, x2, 0, fill="blue", width=4, tag= 'selected')
+        tab_canvas.delete("selected")
+        tab_canvas.create_line(x1, 45, x2, 45, fill="blue", width=4, tag='selected')
+
+
 
 def header_buttons():
     global explore
     explore = tk.Button(
-        header_canvas,
+        tab_frame,
         text="Explore",
         bg='#18141D',
         activebackground='#2C2634',  
@@ -354,7 +374,7 @@ def header_buttons():
     explore.bind("<Button-1>", lambda event: explore_canvas())
 
     u_projects = tk.Button(
-        header_canvas,
+        tab_frame,
         text="Your Projects",
         bg='#18141D',
         activebackground='#2C2634',
@@ -366,7 +386,7 @@ def header_buttons():
     )
 
     u_tasks = tk.Button(
-        header_canvas,
+        tab_frame,
         text="Your Tasks",
         bg='#18141D',
         activebackground='#2C2634', 
@@ -376,13 +396,40 @@ def header_buttons():
         highlightthickness=0,
         width = 10 
     )
-    explore.pack(anchor='w', pady=(20, 0), padx=(20, 0), side='left')
-    u_projects.pack(anchor='w', pady=(20, 0), padx=(20, 0), side='left')
-    u_tasks.pack(anchor='w', pady=(20, 0), padx=(20, 0), side='left')
-    
+    explore.pack(anchor='w', pady=(10,5), padx=10, side='left')
+    u_projects.pack(anchor='w', pady=(10,5), padx=10, side='left')
+    u_tasks.pack(anchor='w', pady=(10,5), padx=10, side='left')    
 
     u_projects.bind("<Button-1>", lambda event: button_selected(u_projects))
     u_tasks.bind("<Button-1>", lambda event: button_selected(u_tasks))
+    bind_mousewheel(tab_frame, "<MouseWheel>", tab_canvas)
+
+def unbind_mousewheel_from_children(widget, event):
+    """Recursively unbind an event from a widget and its children."""
+    widget.unbind(event)
+    for child in widget.winfo_children():
+        unbind_mousewheel_from_children(child, event)
+
+def update_scrolling():
+    # Force update of pending geometry management tasks
+    tab_canvas.update_idletasks()
+    
+    # Calculate the total width of the buttons
+    total_width = sum(btn.winfo_width() for btn in tab_frame.winfo_children())
+    
+    # Compare to the width of the tab_canvas
+    canvas_width = tab_canvas.winfo_width()
+    if canvas_width == 1: canvas_width = 757
+    
+    # Enable or disable scrolling based on the comparison
+    if total_width <= canvas_width:
+        tab_canvas.config(scrollregion=())
+        # Unbind the MouseWheel event from tab_canvas and all its children
+        unbind_mousewheel_from_children(tab_canvas, "<MouseWheel>")
+    else:
+        tab_canvas.config(scrollregion=tab_canvas.bbox('all'))
+        bind_mousewheel(tab_frame, "<MouseWheel>", tab_canvas)
+
 
 def remove_placeholder(event):
     if entry.get() == "🔍 Search For Projects":
@@ -403,10 +450,10 @@ def authenticate(username, password):
     return False
 
 def login():
-    global selected_tab, header_canvas, canvas
-    if not hasattr(header_canvas, "Login"):
-        header_canvas.Login = tk.Button(
-            header_canvas,
+    global selected_tab, tab_frame, canvas
+    if not hasattr(tab_frame, "Login"):
+        tab_frame.Login = tk.Button(
+            tab_frame,
             text="Login",
             bg='#18141D',
             activebackground='#2C2634', 
@@ -416,13 +463,13 @@ def login():
             highlightthickness=0,
             width = 10 
         )
-        header_canvas.Login.pack(anchor='w', pady=(20, 0), padx=(20, 0), side='left')
+        tab_frame.Login.pack(anchor='w', pady=(10,5), padx=10, side='left')
 
     selected_tab = "Login"
     canvas.pack_forget()
     canvas = tk.Canvas(root, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
     canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-    header_canvas.Login.bind("<Button-1>", lambda event: login())
+    tab_frame.Login.bind("<Button-1>", lambda event: login() if selected_tab != "Login" else None)
 
     create_rounded_rectangle(canvas, prev_width/2 -250, 20, prev_width/2 +250, root.winfo_height()-200, 25, fill= '#241E2B', outline = '#5C596D', width= 4)
     
@@ -464,7 +511,7 @@ def login():
 
     def back_to_start():
         global selected_tab
-        header_canvas.Login.destroy()
+        tab_frame.Login.destroy()
         canvas.pack_forget()
         explore_canvas()
 
@@ -485,13 +532,18 @@ def login():
 
     submit_button = ttk.Button(canvas, text="Submit", command=on_submit)
     submit_button.place(relx=0.5, rely=0.65, anchor='c')
-    button_selected(header_canvas.Login)
+    button_selected(tab_frame.Login)
     #"""
+
+def bind_mousewheel(widget, event, canvas):
+    widget.bind(event, lambda e, canvas=canvas: on_mousewheel(e, canvas, 'x'))
+    for child in widget.winfo_children():
+        bind_mousewheel(child, event, canvas)
 
 def explore_canvas():
     global canvas, main_canvas, selected_tab, top_frame, entry
-    print(selected_tab)
     if selected_tab == 'Explore':
+        button_selected(explore)
         return
     selected_tab = 'Explore'
     canvas.pack_forget()
@@ -531,6 +583,7 @@ root = tk.Tk()
 root.geometry('1000x600')
 root.minsize(1000,600)
 root.title("Project Manager")
+root.iconbitmap('GUI_Design/Project_Manager.ico')
 root.bind("<Configure>", lambda event: update_scale() if event.widget == root else None)
 
 style = ttk.Style()
@@ -538,9 +591,10 @@ style.theme_use('clam')
 
 entry_var = tk.StringVar()
 
-header_canvas = tk.Canvas(root, bg='#18141D', bd=0, highlightthickness=0, width=1000, height=120)
+header_canvas = tk.Canvas(root, bg='#18141D', bd=0, highlightthickness=0, width=1000)
 header_canvas.pack(side=tk.TOP, fill=tk.BOTH)
 
+# Packing menu_button first to ensure it's on the far right
 menu_button = tk.Button(
         header_canvas,
         text="☰",
@@ -551,10 +605,19 @@ menu_button = tk.Button(
         borderwidth=0,
         highlightthickness=0,
     )
-menu_button.pack(anchor='ne', padx=10, pady=10)
+menu_button.pack(side='right', padx=10, pady=0)
 
-welcome = tk.Label(header_canvas, text="Welcome to Project Manager!", bg='#18141D', fg='white', font=('Arial', 30, 'bold'))
-welcome.pack(anchor='w', pady =(10, 0), padx= 20)
+welcome = tk.Label(header_canvas, text="Project Manager", bg='#18141D', fg='white', font=('Arial', 0, 'bold'))
+welcome.pack(side='left', pady =(5, 5), padx= (20,0))
+
+# Packing tab_canvas after welcome but before menu_button
+tab_canvas = tk.Canvas(header_canvas, bg='#18141D', highlightthickness=0, height=45)
+tab_canvas.pack(side='left', fill=tk.X, expand=True)
+
+tab_frame = tk.Frame(tab_canvas, bg='#18141D')
+tab_canvas.create_window((0,0), window=tab_frame, anchor='nw')
+
+tab_canvas.bind("<MouseWheel>", lambda event, canvas=tab_canvas: on_mousewheel(event, canvas, 'x'))
 
 canvas = tk.Canvas(root, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
 
