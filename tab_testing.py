@@ -305,22 +305,7 @@ def display_all_proj(canvas, y = 0):
     #After creating the projects making sure the scrolling region is set right
     main_canvas.config(scrollregion=main_canvas.bbox(tk.ALL))
 
-def update_scale():
-    """
-    This is callled on <Configure> to make sure all components are of the right size to fit the screen
-    """
-    global prev_width
-    if root.winfo_width() != prev_width:
-        update_scrolling()
-        tab_canvas.config(width=root.winfo_width()-500)
-        prev_width = root.winfo_width()
-        if selected_tab == 'Login': 
-            canvas.config(width=root.winfo_width())
-            login()
-        elif selected_tab == 'Explore':
-            entry.pack(side='left', padx=(prev_width-500, 10))
-            main_canvas.config(width=root.winfo_width())
-            display_all_proj(main_canvas)
+
 
 def on_mousewheel(event, canvas, direction = 'y'):
     """
@@ -358,7 +343,7 @@ def button_selected(button):
 
 
 def header_buttons():
-    global explore
+    global explore, notebook
     explore = tk.Button(
         tab_frame,
         text="Explore",
@@ -370,7 +355,7 @@ def header_buttons():
         highlightthickness=0,
         width = 10 
     )
-    explore.bind("<Button-1>", lambda event: explore_canvas())
+    explore.bind("<Button-1>", lambda event: set_explore())
 
     u_projects = tk.Button(
         tab_frame,
@@ -409,26 +394,10 @@ def unbind_mousewheel_from_children(widget, event):
     for child in widget.winfo_children():
         unbind_mousewheel_from_children(child, event)
 
-def update_scrolling():
-    # Force update of pending geometry management tasks
-    tab_canvas.update_idletasks()
-    
-    # Calculate the total width of the buttons
-    total_width = sum(btn.winfo_width() for btn in tab_frame.winfo_children())
-    
-    # Compare to the width of the tab_canvas
-    canvas_width = tab_canvas.winfo_width()
-    if canvas_width == 1: canvas_width = 757
-    
-    # Enable or disable scrolling based on the comparison
-    if total_width <= canvas_width:
-        tab_canvas.config(scrollregion=())
-        # Unbind the MouseWheel event from tab_canvas and all its children
-        unbind_mousewheel_from_children(tab_canvas, "<MouseWheel>")
-    else:
-        tab_canvas.config(scrollregion=tab_canvas.bbox('all'))
-        bind_mousewheel(tab_frame, "<MouseWheel>", tab_canvas)
-
+def bind_mousewheel(widget, event, canvas):
+    widget.bind(event, lambda e, canvas=canvas: on_mousewheel(e, canvas, 'x'))
+    for child in widget.winfo_children():
+        bind_mousewheel(child, event, canvas)
 
 def remove_placeholder(event):
     if entry.get() == "🔍 Search For Projects":
@@ -449,7 +418,7 @@ def authenticate(username, password):
     return False
 
 def login():
-    global selected_tab, tab_frame, notebook
+    global selected_tab, tab_frame, canvas
     if not hasattr(tab_frame, "Login"):
         tab_frame.Login = tk.Button(
             tab_frame,
@@ -465,9 +434,8 @@ def login():
         tab_frame.Login.pack(anchor='w', pady=(10,5), padx=10, side='left')
 
     selected_tab = "Login"
-    log_tab = tk.Frame(notebook)
-    notebook.add(log_tab)
-    canvas = tk.Canvas(log_tab, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
+    login_tab = tk.Frame(notebook, bg="#241E2B")
+    canvas = tk.Canvas(login_tab, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
     canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
     tab_frame.Login.bind("<Button-1>", lambda event: login() if selected_tab != "Login" else None)
 
@@ -512,8 +480,8 @@ def login():
     def back_to_start():
         global selected_tab
         tab_frame.Login.destroy()
-        explore_canvas()
-
+        canvas.pack_forget()
+        notebook.select(explore_tab)
 
     def on_submit():
         global canvas
@@ -531,68 +499,72 @@ def login():
 
     submit_button = ttk.Button(canvas, text="Submit", command=on_submit)
     submit_button.place(relx=0.5, rely=0.65, anchor='c')
+    notebook.add(login_tab)
+    notebook.select(login_tab)
     button_selected(tab_frame.Login)
-    notebook.select(log_tab)
     #"""
 
-def bind_mousewheel(widget, event, canvas):
-    widget.bind(event, lambda e, canvas=canvas: on_mousewheel(e, canvas, 'x'))
-    for child in widget.winfo_children():
-        bind_mousewheel(child, event, canvas)
+def update_scrolling():
+    # Force update of pending geometry management tasks
+    tab_canvas.update_idletasks()
+    
+    # Calculate the total width of the buttons
+    total_width = sum(btn.winfo_width() for btn in tab_frame.winfo_children())
+    
+    # Compare to the width of the tab_canvas
+    canvas_width = tab_canvas.winfo_width()
+    if canvas_width == 1: canvas_width = 757
+    
+    # Enable or disable scrolling based on the comparison
+    if total_width <= canvas_width:
+        tab_canvas.config(scrollregion=())
+        # Unbind the MouseWheel event from tab_canvas and all its children
+        unbind_mousewheel_from_children(tab_canvas, "<MouseWheel>")
+    else:
+        tab_canvas.config(scrollregion=tab_canvas.bbox('all'))
+        bind_mousewheel(tab_frame, "<MouseWheel>", tab_canvas)
 
-def explore_canvas():
-    global canvas, main_canvas, selected_tab, top_frame, entry, notebook
-    if selected_tab == 'Explore':
-        button_selected(explore)
-        return
-    selected_tab = 'Explore'
+def update_scale():
+    """
+    This is callled on <Configure> to make sure all components are of the right size to fit the screen
+    """
+    global prev_width
+    if root.winfo_width() != prev_width:
+        update_scrolling()
+        tab_canvas.config(width=root.winfo_width()-500)
+        prev_width = root.winfo_width()
+        if selected_tab == 'Login': 
+            login()
+        elif selected_tab == 'Explore':
+            entry.pack(side='left', padx=(prev_width-500, 10))
+            main_canvas.config(width=root.winfo_width())
+            display_all_proj(main_canvas)
 
-    explore_tab= tk.Frame(notebook)
-    notebook.add(explore_tab)
-    canvas = tk.Canvas(explore_tab, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
-    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
-    # Create a top frame to contain the 'avail' label and 'entry' widget
-    top_frame = tk.Frame(canvas, bg='#241E2B')
-    top_frame.pack(pady=20, fill='x')  # pad in the y direction to provide spacing
-
-    avail = tk.Label(top_frame, text="Available Projects", bg='#241E2B', fg='white', font=('Arial', 18, 'bold'))
-    avail.pack(side='left', padx=20)
-
-    # Create a StringVar for your entry
-    entry_var = tk.StringVar()
-    entry_var.set("🔍 Search For Projects")  # initial value
-
-    # Set a trace on the StringVar
-    entry_var.trace_add("write", on_var_change)
-
-    entry = tk.Entry(top_frame, textvariable=entry_var, fg='white', font=('Arial', 12), bg="#282828", width=40, bd=0, highlightbackground='#18141D', highlightthickness=3)
-    entry.pack(side='left', padx=(prev_width-500, 10))
-
-    main_canvas = tk.Canvas(canvas, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
-    main_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(20,0))
-
-    main_canvas.bind("<MouseWheel>", lambda event, canvas=main_canvas: on_mousewheel(event, canvas))
-    main_canvas.bind("<Button-1>", lambda event: main_canvas_click(event))
-    entry.bind("<FocusIn>", remove_placeholder)
-    entry.bind("<FocusOut>", restore_placeholder)
-
-    display_all_proj(main_canvas)
-    button_selected(explore)
+def set_explore():
+    global selected_tab
+    notebook.select(explore_tab)
+    selected_tab = "Explore"
 
 root = tk.Tk()
 root.geometry('1000x600')
 root.minsize(1000,600)
 root.title("Project Manager")
 root.iconbitmap('GUI_Design/Project_Manager.ico')
-
 root.bind("<Configure>", lambda event: update_scale() if event.widget == root else None)
 
 style = ttk.Style()
-style.configure('clam', background= '#2C2634')
 style.theme_use('clam')
 
 entry_var = tk.StringVar()
+# Set the root window's background color
+root.configure(bg="#2C2634")
+
+# Styling the notebook and its tabs
+style = ttk.Style()
+style.theme_use('default')
+style.configure('TNotebook', background="#2C2634", borderwidth=0, tabmargins=[0, 0, -1000, 0])
+style.configure('TNotebook.Tab', background="#2C2634", foreground="white", padding=0)
+style.layout('TNotebook.Tab', [])
 
 header_canvas = tk.Canvas(root, bg='#18141D', bd=0, highlightthickness=0, width=1000)
 header_canvas.pack(side=tk.TOP, fill=tk.BOTH)
@@ -620,17 +592,38 @@ tab_canvas.pack(side='left', fill=tk.X, expand=True)
 tab_frame = tk.Frame(tab_canvas, bg='#18141D')
 tab_canvas.create_window((0,0), window=tab_frame, anchor='nw')
 
-tab_canvas.bind("<MouseWheel>", lambda event, canvas=tab_canvas: on_mousewheel(event, canvas, 'x'))
-
-# Create the notebook
+# Create the notebook inside the frame
 notebook = ttk.Notebook(root)
-notebook.pack(fill=tk.BOTH, expand=True, padx=0)
+notebook.pack(fill=tk.BOTH, expand=True, padx=1, pady=1)  # Small padding to suppress border
 
-style.layout('TNotebook.Tab', [])  # This effectively hides the tab
-style.configure('TNotebook', tabmargins=[0, -1000, 0, 0])  # Set large negative margin to hide tab area
+# Create two tabs for demonstration
+explore_tab = tk.Frame(notebook, bg="#241E2B")
+canvas = tk.Canvas(explore_tab, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
+canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+# Create a top frame to contain the 'avail' label and 'entry' widget
+top_frame = tk.Frame(canvas, bg='#241E2B')
+top_frame.pack(pady=20, fill='x')  # pad in the y direction to provide spacing
+
+avail = tk.Label(top_frame, text="Available Projects", bg='#241E2B', fg='white', font=('Arial', 18, 'bold'))
+avail.pack(side='left', padx=20)
+
+# Create a StringVar for your entry
+entry_var = tk.StringVar()
+entry_var.set("🔍 Search For Projects")  # initial value
+
+# Set a trace on the StringVar
+entry_var.trace_add("write", on_var_change)
+
+entry = tk.Entry(top_frame, textvariable=entry_var, fg='white', font=('Arial', 12), bg="#282828", width=40, bd=0, highlightbackground='#18141D', highlightthickness=3)
+entry.pack(side='left', padx=(500, 10))
+
+main_canvas = tk.Canvas(canvas, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
+main_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(20, 0))
+display_all_proj(main_canvas)
+main_canvas.bind("<MouseWheel>", lambda event, canvas=main_canvas: on_mousewheel(event, canvas))
+main_canvas.bind("<Button-1>", lambda event: main_canvas_click(event))
+
+notebook.add(explore_tab)
 header_buttons()
-
-temp_tab= tk.Frame(notebook, bg='#241E2B')
-#notebook.add(temp_tab)
-
 root.mainloop()
