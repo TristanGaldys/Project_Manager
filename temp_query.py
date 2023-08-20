@@ -66,3 +66,6 @@ def task_info(id):
     ]
     }
     return task_data[id] 
+
+def get_projects():
+    return ["Project Manager", "PETra", "Another Project", "Profitable Idea!", "Anything TBH"]
