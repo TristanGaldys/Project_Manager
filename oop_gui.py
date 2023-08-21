@@ -5,18 +5,27 @@ from tkinter import font as tkFont
 import temp_query as query
 
 class AbstractTab(ABC):
-    def __init__(self, parent, button, tab_canvas):
+    def __init__(self, parent, button, tab_canvas, tabkeys):
         self.notebook = parent
         self.frame = tk.Frame(parent, bg="#241E2B")
+        tabkeys[str(self.frame)] = self
         self.button = button
         self.tab = tab_canvas
         self.button.bind("<Button-1>", lambda event: self.select_tab())
         self.width = 1000
         self.frame.bind("<Configure>", lambda event: self.update_tab() if self.notebook.select() == str(self.frame) else None)
+        parent.add(self.frame, text=button.cget("text"))
+
+    def __del__(self):
+        self.frame.pack_forget()
+        self.button.frame = self.frame
+        self.button.past = self.past
+        self.button.event_generate("<<Delete_Tab>>")
 
     def select_tab(self):
         if str(self.frame) == self.notebook.select():
             return
+        self.past = self.notebook.select()
         self.notebook.select(self.frame)
         x1, x2 = self.button.winfo_x(), self.button.winfo_x() + self.button.winfo_width()
         
@@ -100,8 +109,8 @@ class AbstractTab(ABC):
         pass
 
 class ExploreTab(AbstractTab):
-    def __init__(self, parent, button, tab_canvas):
-        super().__init__(parent, button, tab_canvas)
+    def __init__(self, parent, button, tab_canvas, tabkeys):
+        super().__init__(parent, button, tab_canvas, tabkeys)
         self.selected = None
 
         canvas = tk.Canvas(self.frame, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
@@ -306,8 +315,79 @@ class ExploreTab(AbstractTab):
             entry.insert(0, placeholder)
 
 class LoginTab(AbstractTab):
+    def __init__(self, parent, button, tab_canvas, tabkeys):
+        super().__init__(parent, button, tab_canvas, tabkeys)
+        self.canvas = tk.Canvas(self.frame, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        self.fail_label = tk.Label(self.canvas, text="", bg='#241E2B', fg='red', font=('Arial', 12))
+        self.fail_label.place(rely= 0.3, x= self.width/2 -50)
+
+        # Sign in message
+        sign = tk.Label(self.canvas, text="Sign In", bg='#241E2B', fg='white', font=('Arial', 18, 'bold'))
+        sign.place(relx = .5, rely=0.25, anchor='c')
+
+        self.user = tk.StringVar()
+
+        # Username label & entry
+        self.username_label = tk.Label(self.canvas, text="Username:", bg='#241E2B', fg='white')
+        self.username_label.place(x= self.width/2 -150, rely=0.4, anchor='e')
+
+        self.username_entry = tk.Entry(self.canvas,
+                                textvariable=self.user,
+                                fg='white', 
+                                font=('Arial', 12), 
+                                bg="#282828", 
+                                width=40, 
+                                bd=0, 
+                                highlightbackground='#241E2B', 
+                                highlightthickness=3)
+        self.username_entry.place(x= self.width/2 -150, rely=0.4, anchor='w')
+
+        self.password = tk.StringVar()
+
+        # Password label & entry
+        self.password_label = tk.Label(self.canvas, text="Password:", bg='#241E2B', fg='white')
+        self.password_label.place(x= self.width/2 - 150, rely=0.5, anchor='e')
+
+        self.password_entry = tk.Entry(self.canvas,
+                                textvariable=self.password,
+                                show="*", 
+                                fg='white', 
+                                font=('Arial', 12), 
+                                bg="#282828", 
+                                width=40, 
+                                bd=0, 
+                                highlightbackground='#241E2B', 
+                                highlightthickness=3)
+        self.password_entry.place(x= self.width/2 - 150, rely=0.5, anchor='w')
+
+        self.submit_button = ttk.Button(self.canvas, text="Submit", command=self.on_submit)
+        self.submit_button.place(relx=0.5, rely=0.65, anchor='c')
+
+    def on_submit(self):
+        if self.authenticate():
+            for widget in self.canvas.winfo_children():
+                widget.destroy()
+            success_label = tk.Label(self.canvas, text="Successfully Logged In!", bg='#241E2B', fg='white', font=('Arial', 14))
+            success_label.place(relx=0.5, rely=0.5, anchor='c')
+            self.__del__()
+        else:
+            self.fail_label.config(text="Failed to login")
+
+    def authenticate(self):
+        if self.user.get() == "admin" and self.password.get() == "password":
+            return True
+        return False
+
     def update_tab(self):
-        return super().update_tab()
+        if self.width != self.frame.winfo_width():
+            self.width = self.frame.winfo_width()
+            self.username_label.place(x= self.width/2 -150, rely=0.4, anchor='e')
+            self.username_entry.place(x= self.width/2 -150, rely=0.4, anchor='w')
+            self.password_label.place(x= self.width/2 - 150, rely=0.5, anchor='e')
+            self.password_entry.place(x= self.width/2 - 150, rely=0.5, anchor='w')
+
 
 class ProjectManager:
     def __init__(self):
@@ -326,16 +406,14 @@ class ProjectManager:
         style.layout('TNotebook.Tab', [])
 
         self.width = 1000
+        self.tabkeys = {}
         
         self.create_header()
 
         self.notebook = ttk.Notebook(self.root)
-
-        self.explore = ExploreTab(self.notebook, self.create_tab("Explore"), self.tab_canvas)
-        self.notebook.add(self.explore.frame, text="Explore")
-        
-        self.login = LoginTab(self.notebook, self.create_tab("Login"), self.tab_canvas)
-        self.notebook.add(self.login.frame, text="Login")
+        self.explore = ExploreTab(self.notebook, self.create_tab("Explore"), self.tab_canvas, self.tabkeys)
+        self.login = LoginTab(self.notebook, self.create_tab("Login"), self.tab_canvas, self.tabkeys)
+        self.login.select_tab()
 
         self.notebook.pack(fill=tk.BOTH, expand=True)
 
@@ -385,6 +463,7 @@ class ProjectManager:
             width = 10 
         )
         button.pack(anchor='w', pady=(10,5), padx=10, side='left')
+        button.bind("<<Delete_Tab>>", lambda event: self.remove_tab(button))
         self.update_scrolling()
         return button
 
@@ -427,5 +506,12 @@ class ProjectManager:
         else:
             self.tab_canvas.config(scrollregion=self.tab_canvas.bbox('all'))
             self.bind_mousewheel(self.tab_frame, "<MouseWheel>", self.tab_canvas)
+
+    def remove_tab(self, button):
+        self.tabkeys[button.past].select_tab()
+        self.notebook.forget(button.frame)
+        del self.tabkeys[str(button.frame)]
+        button.frame.destroy()
+        button.destroy()
 
 app = ProjectManager()
