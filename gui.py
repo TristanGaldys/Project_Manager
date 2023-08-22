@@ -540,11 +540,94 @@ class LoginTab(AbstractTab):
 class SignUpTab(AbstractTab):
     def __init__(self, parent, button, tab_canvas, classkeys, select=False):
         super().__init__(parent, button, tab_canvas, classkeys, select)
+
+        self.valid_pass = False
+        self.valid_user = False
+
         self.canvas = tk.Canvas(self.frame, bg='#241E2B', bd=0, highlightthickness=0, width=self.width)
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
+        sign = tk.Label(self.canvas, text="Sign Up", bg='#241E2B', fg='white', font=('Arial', 18, 'bold'))
+        sign.place(relx = .5, rely=0.05, anchor='c')
+
+        self.user = tk.StringVar()
+
+        # Username label & entry
+        self.username_label = tk.Label(self.canvas, text="Username:", bg='#241E2B', fg='white')
+        self.username_label.place(x= self.width/2 -150, rely=0.15, anchor='e')
+
+        self.username_entry = ttk.Entry(self.canvas, textvariable=self.user, style='Custom.TEntry', width=60)
+        self.username_entry.place(x= self.width/2 -150, rely=0.15, anchor='w')
+
+        self.password = tk.StringVar()
+
+        # Password label & entry
+        self.password_label = tk.Label(self.canvas, text="Password:", bg='#241E2B', fg='white')
+        self.password_label.place(x= self.width/2 - 150, rely=0.25, anchor='e')
+
+        self.password_entry = ttk.Entry(self.canvas, textvariable=self.password, style='Custom.TEntry', width=60, show="*")
+        self.password_entry.place(x= self.width/2 - 150, rely=0.25, anchor='w')
+
+        self.confirm= tk.StringVar()
+
+        self.confirm_label = tk.Label(self.canvas, text="Confirm Password:", bg='#241E2B', fg='white')
+        self.confirm_label.place(x= self.width/2 - 150, rely=0.35, anchor='e')
+
+        self.confirm_entry = ttk.Entry(self.canvas, textvariable=self.confirm, style='Custom.TEntry', width=60, show="*")
+        self.confirm_entry.place(x= self.width/2 - 150, rely=0.35, anchor='w')
+
+        self.user.trace_add("write", lambda *args: self.on_var_change(self.user))
+        self.confirm.trace_add("write", lambda *args: self.on_var_change(self.confirm))
+        self.match = tk.Label(self.canvas, text="Passwords do not match", bg='#241E2B', fg='red')
+        self.user_check = tk.Label(self.canvas, text="Looks good! This username is available.", bg='#241E2B', fg='green')
+
+        self.skill_label = tk.Label(self.canvas, text="Your Skills:", bg='#241E2B', fg='white')
+        self.skill_label.place(x= self.width/2 - 190, rely=0.46, anchor='e')
+
+        self.skills = tk.Frame(self.canvas, bg='#241E2B', width = self.width/2, height= self.height*.3)
+        self.selected_skills = self.checkbox(self.skills, query.get_all_skills(), height = self.height*.3, width = 500)
+        self.skills.place(x= self.width/2 - 190, rely= 0.45)
+
+        signup_button = ttk.Button(self.canvas, text="Sign Up", style="Custom.TButton")
+        signup_button.place(relx=0.55, rely=0.85, anchor='c')
+        signup_button.bind("<Button-1>", lambda event: self.signup() if self.valid_pass and self.valid_user else None)    
+
+    def signup(self):
+        skills = self.get_selected(self.selected_skills)
+        query.create_user(self.user.get(), self.password.get(), skills)
+        self.__del__()
+
     def update_tab(self):
-        return super().update_tab()
+        super().update_tab()
+        if self.width != self.frame.winfo_width():
+            self.width = self.frame.winfo_width()
+            self.username_label.place(x= self.width/2 -150, rely=0.15, anchor='e')
+            self.username_entry.place(x= self.width/2 -150, rely=0.15, anchor='w')
+            self.password_label.place(x= self.width/2 - 150, rely=0.25, anchor='e')
+            self.password_entry.place(x= self.width/2 - 150, rely=0.25, anchor='w')
+            self.confirm_label.place(x= self.width/2 - 150, rely=0.35, anchor='e')
+            self.confirm_entry.place(x= self.width/2 - 150, rely=0.35, anchor='w')
+            self.skill_label.place(x= self.width/2 - 150, rely=0.4, anchor='e')
+            self.skills.place(x= self.width/2 - 150, rely= 0.4)
+    
+    def on_var_change(self, var):
+        if var == self.confirm:
+            if self.password.get() != var.get():
+                self.match.place(relx = .5, rely=0.30, anchor='c')
+                self.valid_pass = False
+            else:
+                self.valid_pass = True
+                self.match.place_forget()
+        if var == self.user:
+            if query.verify_user(var.get()):
+                self.user_check.config(fg='red', text= "Oops! That username is taken. Try another one.")
+                self.user_check.place(relx = .5, rely=0.10, anchor='c')
+                self.valid_user = False
+            else:
+                self.user_check.config(fg='green',  text="Looks good! This username is available.")
+                self.user_check.place(relx = .5, rely=0.10, anchor='c')
+                self.valid_user = True
+
 class ProjectManager:
     def __init__(self):
         self.root = tk.Tk()
