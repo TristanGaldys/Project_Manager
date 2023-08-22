@@ -15,9 +15,35 @@ class AbstractTab(ABC):
         self.button.bind("<Button-1>", lambda event: self.select_tab())
         self.width = 1000
         if parent.winfo_width() > 1000: self.width = parent.winfo_width()
+        self.height = 500
+        if parent.winfo_height() > 500: self.height = parent.winfo_height()
         self.frame.bind("<Configure>", lambda event: self.update_tab() if self.notebook.select() == str(self.frame) else None)
         parent.add(self.frame, text=button.cget("text"))
         if select: self.select_tab()
+        self.create_styles()
+
+    def create_styles(self):
+        self.style = ttk.Style()
+        self.style.configure("Custom.TButton",
+                background="#282828",
+                foreground="white",
+                bordercolor="#282828",
+                darkcolor="#282828",
+                lightcolor="#282828",
+                relief="flat")
+        self.style.map("Custom.TButton",
+            background=[('active', '#282828')],
+            foreground=[('active', 'white')])
+        self.style.configure('Custom.TEntry', 
+                foreground='white',
+                font=('Arial', 12),
+                background="#282828",
+                fieldbackground="#282828",
+                insertcolor='white',  # Color of the insertion cursor
+                borderwidth=0,
+                highlightbackground='#241E2B',
+                highlightthickness=3
+               )
 
     def __del__(self):
         self.classkeys[self.past].select_tab()
@@ -77,6 +103,9 @@ class AbstractTab(ABC):
         )
 
     def wrap_text(self, text, font, max_width, max_lines = None):
+        if font == "":
+            font = tkFont.Font(font="TkDefaultFont")
+
         lines = []
         words = text.split()
         
@@ -92,19 +121,21 @@ class AbstractTab(ABC):
         if len(lines) == 1: lines = lines[0]
         return lines
 
-    def get_longest(self, texts, font):
+    def get_longest(self, texts, font = ""):
+        if font == "":
+            font = tkFont.Font(font="TkDefaultFont")
         longest_length = 0
         for text in texts:
             text_width = font.measure(text)
             longest_length = max(longest_length, text_width)
         return longest_length
     
-    def on_mousewheel(self,event, canvas, direction = 'y'):
+    def on_mousewheel(self,event, canvas, dir = 'y'):
         """
         This allows the canvas to be scrolled through
         """
         canvas.focus_set()
-        if direction == 'y':
+        if dir == 'y':
             canvas.yview_scroll(-1*(event.delta//120), "units")
         else:
             canvas.xview_scroll(-1*(event.delta//120), "units")
@@ -112,6 +143,125 @@ class AbstractTab(ABC):
     def on_var_change(self, var):
         #print(var.get())
         pass
+
+    def get_selected(self, checkbutton_vars):
+        selected = []
+        for key, value in checkbutton_vars.items():
+            if value.get() != 0:
+                selected.append(key)
+        return selected
+
+    def unbind_mousewheel_from_children(self, widget):
+        """Recursively unbind an event from a widget and its children."""
+        widget.unbind("<MouseWheel>")
+        for child in widget.winfo_children():
+            self.unbind_mousewheel_from_children(child, "<MouseWheel>")
+
+    def bind_mousewheel(self, widget, canvas , dir = 'y'):
+        widget.bind("<MouseWheel>", lambda e, canvas=canvas: self.on_mousewheel(e, canvas, dir))
+        for child in widget.winfo_children():
+            self.bind_mousewheel(child, canvas, dir)
+
+    def checkbox(self, parent, options, height = 200, width = 300, print_sel = True, sel_label = "You've Selected: "):
+        def on_frame_configure(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+            canvas.itemconfig(frame_id, width=event.width)
+
+        def on_search(*args):
+            query = search_var.get().lower()
+            for checkbutton, option in zip(checkbuttons, options):
+                if query in option.lower():
+                    checkbutton.pack(anchor='w', padx=10, pady=2)
+                else:
+                    checkbutton.pack_forget()
+            frame.update_idletasks()
+            canvas.config(scrollregion=canvas.bbox("all"))
+        
+        def print_selection(*args):
+            for line in printed_sel:
+                line.place_forget()
+            printed_sel.clear()
+            text = ""
+            for skill in self.get_selected(checkbutton_vars):
+                if text == "":
+                    text = sel_label + skill
+                else:
+                    text += ", " + skill
+            text = self.wrap_text(text, "", width-framewidth)
+            if isinstance(text, list):
+                spacing = 0
+                for line in text:
+                    temp = tk.Label(canvas, text=line, bg='#241E2B', fg='white')
+                    temp.place(x= framewidth, y = spacing)
+                    printed_sel.append(temp)
+                    spacing += 20
+            else:
+                temp = tk.Label(canvas, text=text, bg='#241E2B', fg='white')
+                temp.place(x= framewidth, y = 0)
+                printed_sel.append(temp)
+
+        def add_option():
+            if search_var.get() not in options:
+                var = tk.IntVar()
+                var.trace_add('write', print_selection)
+                checkbutton = tk.Checkbutton(frame, 
+                                            text=search_var.get(), 
+                                            variable=var, 
+                                            bg='#241E2B', 
+                                            fg='#FFF', 
+                                            selectcolor='#000',
+                                            activebackground='#241E2F')
+                checkbutton.pack(anchor='w', padx=10, pady=2)
+                checkbutton_vars[search_var.get()] = var
+                checkbuttons.append(checkbutton)
+                options.append(search_var.get())
+            if checkbutton_vars[search_var.get()].get() == 0:
+                checkbutton_vars[search_var.get()].set(1)
+            else:
+                checkbutton_vars[search_var.get()].set(0)
+
+        printed_sel = []
+        framewidth = width
+        if print_sel:
+            framewidth = self.get_longest(options)+ 25
+            if width/2 > framewidth:
+                framewidth = width/2
+
+        # Entry for searching
+        search_var = tk.StringVar()
+        search_var.trace_add('write', on_search)
+        entry = tk.Entry(parent, textvariable=search_var, bg='#241E2B', fg='#FFF')
+        entry.pack(pady=0, padx=(0, width- framewidth), fill=tk.X)
+        entry.bind("<Return>", lambda event: add_option())
+
+        # Create a Canvas
+        canvas = tk.Canvas(parent, bg='#241E2B', borderwidth=0, highlightthickness=0, height=height, width = width)
+        canvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        # Create a frame to hold the Checkbuttons and add it to the Canvas
+        frame = tk.Frame(canvas, bg='#241E2B', borderwidth=0, highlightthickness=0)
+        frame_id = canvas.create_window((0,0), window=frame, anchor='nw', width= framewidth)
+
+        # Populate the frame with Checkbuttons
+        checkbutton_vars = {}
+        checkbuttons = []
+        for option in options:
+            var = tk.IntVar()
+            var.trace_add('write', print_selection)
+            checkbutton = tk.Checkbutton(frame, 
+                                        text=option, 
+                                        variable=var, 
+                                        bg='#241E2B', 
+                                        fg='#FFF', 
+                                        selectcolor='#000',
+                                        activebackground='#241E2F')
+            checkbutton.pack(anchor='w', padx=0, pady=2)
+            checkbutton_vars[option] = var
+            checkbuttons.append(checkbutton)
+
+        frame.bind("<Configure>", on_frame_configure)
+        self.bind_mousewheel(frame, canvas)
+        return checkbutton_vars
 
     @abstractmethod
     def update_tab(self):
@@ -343,15 +493,7 @@ class LoginTab(AbstractTab):
         self.username_label = tk.Label(self.canvas, text="Username:", bg='#241E2B', fg='white')
         self.username_label.place(x= self.width/2 -150, rely=0.4, anchor='e')
 
-        self.username_entry = tk.Entry(self.canvas,
-                                textvariable=self.user,
-                                fg='white', 
-                                font=('Arial', 12), 
-                                bg="#282828", 
-                                width=40, 
-                                bd=0, 
-                                highlightbackground='#241E2B', 
-                                highlightthickness=3)
+        self.username_entry = ttk.Entry(self.canvas, textvariable=self.user, style='Custom.TEntry', width=60)
         self.username_entry.place(x= self.width/2 -150, rely=0.4, anchor='w')
 
         self.password = tk.StringVar()
@@ -360,31 +502,8 @@ class LoginTab(AbstractTab):
         self.password_label = tk.Label(self.canvas, text="Password:", bg='#241E2B', fg='white')
         self.password_label.place(x= self.width/2 - 150, rely=0.5, anchor='e')
 
-        self.password_entry = tk.Entry(self.canvas,
-                                textvariable=self.password,
-                                show="*", 
-                                fg='white', 
-                                font=('Arial', 12), 
-                                bg="#282828", 
-                                width=40, 
-                                bd=0, 
-                                highlightbackground='#241E2B', 
-                                highlightthickness=3)
+        self.password_entry = ttk.Entry(self.canvas, textvariable=self.password, style='Custom.TEntry', width=60)
         self.password_entry.place(x= self.width/2 - 150, rely=0.5, anchor='w')
-
-        style = ttk.Style()
-        style.configure("Custom.TButton",
-                        background="#282828",
-                        foreground="white",
-                        bordercolor="#282828",
-                        darkcolor="#282828",
-                        lightcolor="#282828",
-                        relief="flat")
-
-        # Set active state styling
-        style.map("Custom.TButton",
-                  background=[('active', '#282828')],
-                  foreground=[('active', 'white')])
 
         self.password_entry.bind("<Return>", lambda event: self.on_submit())
         login_button = ttk.Button(self.canvas, text="Login", style="Custom.TButton", command=self.on_submit)
@@ -411,13 +530,13 @@ class LoginTab(AbstractTab):
 
     def update_tab(self):
         super().update_tab()
-        if self.width != self.frame.winfo_width():
+        if self.width != self.frame.winfo_width() and self.frame.winfo_width() >= 1000:
             self.width = self.frame.winfo_width()
             self.username_label.place(x= self.width/2 -150, rely=0.4, anchor='e')
             self.username_entry.place(x= self.width/2 -150, rely=0.4, anchor='w')
             self.password_label.place(x= self.width/2 - 150, rely=0.5, anchor='e')
             self.password_entry.place(x= self.width/2 - 150, rely=0.5, anchor='w')
-
+     
 class SignUpTab(AbstractTab):
     def __init__(self, parent, button, tab_canvas, classkeys, select=False):
         super().__init__(parent, button, tab_canvas, classkeys, select)
