@@ -5,11 +5,11 @@ from tkinter import font as tkFont
 import temp_query as query
 
 class AbstractTab(ABC):
-    def __init__(self, parent, button, tab_canvas, tabkeys, select = False):
+    def __init__(self, parent, button, tab_canvas, classkeys, select = False):
         self.notebook = parent
         self.frame = tk.Frame(parent, bg="#241E2B")
-        tabkeys[str(self.frame)] = self
-        self.tabkeys = tabkeys
+        classkeys[str(self.frame)] = self
+        self.classkeys = classkeys
         self.button = button
         self.tab = tab_canvas
         self.button.bind("<Button-1>", lambda event: self.select_tab())
@@ -20,21 +20,15 @@ class AbstractTab(ABC):
         if select: self.select_tab()
 
     def __del__(self):
-        self.frame.pack_forget()
-        self.button.frame = self.frame
-        self.button.past = self.past
-        self.button.event_generate("<<Delete_Tab>>")
+        self.classkeys[self.past].select_tab()
+        self.button.destroy()
+        self.frame.destroy()
 
     def create_tab(self, label, Tab, delete = False):
-        def new_tab(Tab):
-            new_tab = Tab(self.notebook, self.button.new_tab, self.tab, self.tabkeys, True)
-            del self.button.new_tab
-            if delete:
-                self.past = str(new_tab.frame)
-                self.__del__()
-        self.button.new_tab_label = label
-        self.button.bind("<<Tab_Created>>", lambda event: new_tab(Tab))
-        self.button.event_generate("<<Create_Tab>>")
+        new_tab = Tab(self.notebook, self.classkeys[self.notebook].create_tab(label), self.tab, self.classkeys, True)
+        if delete: 
+            self.past = str(new_tab.frame)
+            self.__del__()
 
     def select_tab(self):
         x1, x2 = self.button.winfo_x(), self.button.winfo_x() + self.button.winfo_width()
@@ -124,8 +118,8 @@ class AbstractTab(ABC):
         self.select_tab()
 
 class ExploreTab(AbstractTab):
-    def __init__(self, parent, button, tab_canvas, tabkeys, select = False):
-        super().__init__(parent, button, tab_canvas, tabkeys, select)
+    def __init__(self, parent, button, tab_canvas, classkeys, select = False):
+        super().__init__(parent, button, tab_canvas, classkeys, select)
         self.selected = None
 
         canvas = tk.Canvas(self.frame, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
@@ -331,8 +325,8 @@ class ExploreTab(AbstractTab):
             entry.insert(0, placeholder)
 
 class LoginTab(AbstractTab):
-    def __init__(self, parent, button, tab_canvas, tabkeys, select = False):
-        super().__init__(parent, button, tab_canvas, tabkeys, select)
+    def __init__(self, parent, button, tab_canvas, classkeys, select = False):
+        super().__init__(parent, button, tab_canvas, classkeys, select)
         self.canvas = tk.Canvas(self.frame, bg='#241E2B', bd=0, highlightthickness=0, width=self.width)
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
@@ -392,7 +386,7 @@ class LoginTab(AbstractTab):
                   background=[('active', '#282828')],
                   foreground=[('active', 'white')])
 
-
+        self.password_entry.bind("<Return>", lambda event: self.on_submit())
         login_button = ttk.Button(self.canvas, text="Login", style="Custom.TButton", command=self.on_submit)
         login_button.place(relx=0.45, rely=0.65, anchor='c')
 
@@ -425,8 +419,8 @@ class LoginTab(AbstractTab):
             self.password_entry.place(x= self.width/2 - 150, rely=0.5, anchor='w')
 
 class SignUpTab(AbstractTab):
-    def __init__(self, parent, button, tab_canvas, tabkeys, select=False):
-        super().__init__(parent, button, tab_canvas, tabkeys, select)
+    def __init__(self, parent, button, tab_canvas, classkeys, select=False):
+        super().__init__(parent, button, tab_canvas, classkeys, select)
         self.canvas = tk.Canvas(self.frame, bg='#241E2B', bd=0, highlightthickness=0, width=self.width)
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
@@ -449,13 +443,14 @@ class ProjectManager:
         style.layout('TNotebook.Tab', [])
 
         self.width = 1000
-        self.tabkeys = {}
+        self.classkeys = {}
         
         self.create_header()
 
         self.notebook = ttk.Notebook(self.root)
-        ExploreTab(self.notebook, self.create_tab("Explore"), self.tab_canvas, self.tabkeys)
-        LoginTab(self.notebook, self.create_tab("Login"), self.tab_canvas, self.tabkeys, True)
+        self.classkeys[self.notebook] = self
+        ExploreTab(self.notebook, self.create_tab("Explore"), self.tab_canvas, self.classkeys)
+        LoginTab(self.notebook, self.create_tab("Login"), self.tab_canvas, self.classkeys, True)
 
         self.notebook.pack(fill=tk.BOTH, expand=True)
 
@@ -505,8 +500,6 @@ class ProjectManager:
             width = 10 
         )
         button.pack(anchor='w', pady=(10,5), padx=10, side='left')
-        button.bind("<<Delete_Tab>>", lambda event: self.remove_tab(button))
-        button.bind("<<Create_Tab>>", lambda event: self.new_tab(button))
         self.update_scrolling()
         return button
 
@@ -549,22 +542,5 @@ class ProjectManager:
         else:
             self.tab_canvas.config(scrollregion=self.tab_canvas.bbox('all'))
             self.bind_mousewheel(self.tab_frame, "<MouseWheel>", self.tab_canvas)
-
-    def remove_tab(self, button):
-        Tab = self.tabkeys[list(self.tabkeys)[0]]
-        try:
-            Tab = self.tabkeys[button.past]
-        except KeyError:
-            pass
-        self.notebook.forget(button.frame)
-        del self.tabkeys[str(button.frame)]
-        button.frame.destroy()
-        button.destroy()
-        Tab.select_tab()
-
-    def new_tab(self, button):
-        button.new_tab = self.create_tab(button.new_tab_label)
-        del button.new_tab_label
-        button.event_generate("<<Tab_Created>>")
 
 app = ProjectManager()
