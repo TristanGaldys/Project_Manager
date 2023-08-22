@@ -9,6 +9,7 @@ class AbstractTab(ABC):
         self.notebook = parent
         self.frame = tk.Frame(parent, bg="#241E2B")
         tabkeys[str(self.frame)] = self
+        self.tabkeys = tabkeys
         self.button = button
         self.tab = tab_canvas
         self.button.bind("<Button-1>", lambda event: self.select_tab())
@@ -21,6 +22,15 @@ class AbstractTab(ABC):
         self.button.frame = self.frame
         self.button.past = self.past
         self.button.event_generate("<<Delete_Tab>>")
+
+    def create_tab(self, label, Tab):
+        def new_tab(Tab):
+            new_tab = Tab(self.notebook, self.button.new_tab, self.tab, self.tabkeys)
+            del self.button.new_tab
+            new_tab.select_tab()
+        self.button.new_tab_label = label
+        self.button.bind("<<Tab_Created>>", lambda event: new_tab(Tab))
+        self.button.event_generate("<<Create_Tab>>")
 
     def select_tab(self):
         if str(self.frame) == self.notebook.select():
@@ -362,8 +372,27 @@ class LoginTab(AbstractTab):
                                 highlightthickness=3)
         self.password_entry.place(x= self.width/2 - 150, rely=0.5, anchor='w')
 
-        self.submit_button = ttk.Button(self.canvas, text="Submit", command=self.on_submit)
-        self.submit_button.place(relx=0.5, rely=0.65, anchor='c')
+        style = ttk.Style()
+        style.configure("Custom.TButton",
+                        background="#282828",
+                        foreground="white",
+                        bordercolor="#282828",
+                        darkcolor="#282828",
+                        lightcolor="#282828",
+                        relief="flat")
+
+        # Set active state styling
+        style.map("Custom.TButton",
+                  background=[('active', '#282828')],
+                  foreground=[('active', 'white')])
+
+
+        login_button = ttk.Button(self.canvas, text="Login", style="Custom.TButton", command=self.on_submit)
+        login_button.place(relx=0.45, rely=0.65, anchor='c')
+
+        signup_button = ttk.Button(self.canvas, text="Sign Up", style="Custom.TButton")
+        signup_button.place(relx=0.55, rely=0.65, anchor='c')
+        signup_button.bind("<Button-1>", lambda event: self.create_tab("Sign Up", SignUpTab))
 
     def on_submit(self):
         if self.authenticate():
@@ -388,7 +417,12 @@ class LoginTab(AbstractTab):
             self.password_label.place(x= self.width/2 - 150, rely=0.5, anchor='e')
             self.password_entry.place(x= self.width/2 - 150, rely=0.5, anchor='w')
 
+class SignUpTab(AbstractTab):
+    def __init__(self, parent, button, tab_canvas, tabkeys):
+        super().__init__(parent, button, tab_canvas, tabkeys)
 
+    def update_tab(self):
+        return super().update_tab()
 class ProjectManager:
     def __init__(self):
         self.root = tk.Tk()
@@ -464,6 +498,7 @@ class ProjectManager:
         )
         button.pack(anchor='w', pady=(10,5), padx=10, side='left')
         button.bind("<<Delete_Tab>>", lambda event: self.remove_tab(button))
+        button.bind("<<Create_Tab>>", lambda event: self.new_tab(button))
         self.update_scrolling()
         return button
 
@@ -513,5 +548,10 @@ class ProjectManager:
         del self.tabkeys[str(button.frame)]
         button.frame.destroy()
         button.destroy()
+
+    def new_tab(self, button):
+        button.new_tab = self.create_tab(button.new_tab_label)
+        del button.new_tab_label
+        button.event_generate("<<Tab_Created>>")
 
 app = ProjectManager()
