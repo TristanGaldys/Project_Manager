@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import font as tkFont
 import temp_query as query
+import bcrypt
 
 class AbstractTab(ABC):
     def __init__(self, parent, button, tab_canvas, classkeys, select = False):
@@ -559,11 +560,6 @@ class LoginTab(AbstractTab):
         else:
             self.fail_label.config(text="Failed to login")
 
-    def authenticate(self):
-        if self.user.get() == "admin" and self.password.get() == "password":
-            return True
-        return False
-
     def update_tab(self):
         super().update_tab()
         if self.width != self.frame.winfo_width() and self.frame.winfo_width() >= 1000:
@@ -630,7 +626,8 @@ class SignUpTab(AbstractTab):
 
     def signup(self):
         skills = self.get_selected(self.selected_skills)
-        query.create_user(self.user.get(), self.password.get(), skills)
+        hashed = bcrypt.hashpw(self.password.get().encode(), bcrypt.gensalt())
+        query.create_user(self.user.get(), hashed, skills)
         self.__del__()
 
     def update_tab(self):
