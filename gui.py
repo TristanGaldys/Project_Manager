@@ -265,6 +265,8 @@ class AbstractTab(ABC):
 
     @abstractmethod
     def update_tab(self):
+        if self.frame.winfo_height() != self.height:
+            self.height = self.frame.winfo_height()
         self.select_tab()
 
 class ExploreTab(AbstractTab):
@@ -272,15 +274,19 @@ class ExploreTab(AbstractTab):
         super().__init__(parent, button, tab_canvas, classkeys, select)
         self.selected = None
 
+        if not hasattr(self, "user"): 
+            self.user = None
+            self.noProjects = "Seems like there are no Projects :(, Please log in if you'd like to make one!"
+
         canvas = tk.Canvas(self.frame, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
         canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Create a top frame to contain the 'avail' label and 'entry' widget
-        top_frame = tk.Frame(canvas, bg='#241E2B')
-        top_frame.pack(pady=20, fill='x')  # pad in the y direction to provide spacing
+        self.top_frame = tk.Frame(canvas, bg='#241E2B')
+        self.top_frame.pack(pady=20, fill='x')  # pad in the y direction to provide spacing
 
-        avail = tk.Label(top_frame, text="Available Projects", bg='#241E2B', fg='white', font=('Arial', 18, 'bold'))
-        avail.pack(side='left', padx=20)
+        self.avail = tk.Label(self.top_frame, text="Available Projects", bg='#241E2B', fg='white', font=('Arial', 18, 'bold'))
+        self.avail.pack(side='left', padx=20)
 
         # Create a StringVar for your entry
         entry_var = tk.StringVar()
@@ -289,19 +295,20 @@ class ExploreTab(AbstractTab):
         # Set a trace on the StringVar
         entry_var.trace_add("write", lambda *args: self.on_var_change(entry_var))
 
-        self.entry = tk.Entry(top_frame, textvariable=entry_var, fg='white', font=('Arial', 12), bg="#282828", width=40, bd=0, highlightbackground='#18141D', highlightthickness=3)
-        self.entry.pack(side='left', padx=(500 , 10))
+        self.entry = tk.Entry(self.top_frame, textvariable=entry_var, fg='white', font=('Arial', 12), bg="#282828", width=30, bd=0, highlightbackground='#18141D', highlightthickness=3)
+        self.entry.pack(side='right', padx=20)
 
         self.main_canvas = tk.Canvas(canvas, bg='#241E2B', bd=0, highlightthickness=0, width=1000)
         self.main_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(20, 0))
+        self.projects = query.get_projects(self.user)
         self.display_all_proj()
-        self.main_canvas.bind("<MouseWheel>", lambda event, canvas=self.main_canvas: self.on_mousewheel(event, canvas))
         self.main_canvas.bind("<Button-1>", lambda event: self.click(event))
         self.entry.bind("<FocusIn>", lambda event: self.remove_placeholder(self.entry, "🔍 Search For Projects"))
         self.entry.bind("<FocusOut>", lambda event: self.restore_placeholder(self.entry, "🔍 Search For Projects"))
 
     def update_tab(self):
         super().update_tab()
+        self.update_scrolling()
         if self.width != self.frame.winfo_width():
             self.width = self.frame.winfo_width()
             self.entry.pack(side='left', padx=(self.width-500 , 10))
@@ -426,15 +433,21 @@ class ExploreTab(AbstractTab):
         """
         This function displays all projects and whichever projects tasks that are selected
         """
-        #This will be changed to a function from query.py
         self.main_canvas.delete('all')
-        projects = query.get_projects()
-        for project in projects:
-            if project == self.selected:
-                y = self.display_proj_tasks(project, y+10)
-            else:
-                y = self.display_project(project, y+10)
-        
+        if self.projects == []:
+            text = self.wrap_text(self.noProjects, tkFont.Font(font=("Arial", 20, 'bold')), self.width-200)
+            i = 0
+            if isinstance(text, str): text = [text]
+            for line in text:
+                self.main_canvas.create_text(self.width/2, 150+i, text= line, fill="white", anchor='c', font=("Arial", 20, 'bold'), tag='NoProj')
+                i+= 30
+        else:
+            for project in self.projects:
+                if project == self.selected:
+                    y = self.display_proj_tasks(project, y+10)
+                else:
+                    y = self.display_project(project, y+10)
+        self.main_canvas.update()   
         #After creating the projects making sure the scrolling region is set right
         self.main_canvas.config(scrollregion=self.main_canvas.bbox(tk.ALL))
 
@@ -474,6 +487,27 @@ class ExploreTab(AbstractTab):
         if entry.get().strip() == "":
             entry.insert(0, placeholder)
 
+    def update_scrolling(self):
+        if len(self.projects)*100 < self.height-80:
+            self.main_canvas.unbind("<MouseWheel>")
+        else:
+            self.main_canvas.bind("<MouseWheel>", lambda event, canvas=self.main_canvas: self.on_mousewheel(event, canvas))
+
+class UserProjectsTab(ExploreTab):
+    def __init__(self, parent, button, tab_canvas, classkeys, select=False):
+        self.classkeys = classkeys
+        self.noProjects = "Seems like you arent a part of any projects, You can either find one to join or create one!"
+        self.user = classkeys[parent].user
+        super().__init__(parent, button, tab_canvas, classkeys, select)
+        self.avail.configure(text= "Your Projects")
+        newProj = ttk.Button(self.top_frame, text="Create Project", style="Custom.TButton")
+        newProj.pack(side= 'right', padx=0)
+    
+    def update_tab(self):
+        if not hasattr(self, "projects"):
+            return
+        return super().update_tab()
+
 class LoginTab(AbstractTab):
     def __init__(self, parent, button, tab_canvas, classkeys, select = False):
         super().__init__(parent, button, tab_canvas, classkeys, select)
@@ -502,7 +536,7 @@ class LoginTab(AbstractTab):
         self.password_label = tk.Label(self.canvas, text="Password:", bg='#241E2B', fg='white')
         self.password_label.place(x= self.width/2 - 150, rely=0.5, anchor='e')
 
-        self.password_entry = ttk.Entry(self.canvas, textvariable=self.password, style='Custom.TEntry', width=60)
+        self.password_entry = ttk.Entry(self.canvas, textvariable=self.password, style='Custom.TEntry', width=60, show="*")
         self.password_entry.place(x= self.width/2 - 150, rely=0.5, anchor='w')
 
         self.password_entry.bind("<Return>", lambda event: self.on_submit())
@@ -514,12 +548,14 @@ class LoginTab(AbstractTab):
         signup_button.bind("<Button-1>", lambda event: self.create_tab("Sign Up", SignUpTab, True))     
 
     def on_submit(self):
-        if self.authenticate():
+        user = query.verify_user(self.user.get(), self.password.get())
+        if isinstance(user, str):
             for widget in self.canvas.winfo_children():
                 widget.destroy()
             success_label = tk.Label(self.canvas, text="Successfully Logged In!", bg='#241E2B', fg='white', font=('Arial', 14))
             success_label.place(relx=0.5, rely=0.5, anchor='c')
-            self.__del__()
+            self.classkeys[self.notebook].user = user
+            self.create_tab("Your Projects", UserProjectsTab, True)
         else:
             self.fail_label.config(text="Failed to login")
 
@@ -589,7 +625,7 @@ class SignUpTab(AbstractTab):
         self.skills.place(x= self.width/2 - 190, rely= 0.45)
 
         signup_button = ttk.Button(self.canvas, text="Sign Up", style="Custom.TButton")
-        signup_button.place(relx=0.55, rely=0.85, anchor='c')
+        signup_button.place(relx=0.50, rely=0.85, anchor='c')
         signup_button.bind("<Button-1>", lambda event: self.signup() if self.valid_pass and self.valid_user else None)    
 
     def signup(self):
@@ -646,6 +682,7 @@ class ProjectManager:
 
         self.width = 1000
         self.classkeys = {}
+        self.user = None
         
         self.create_header()
 
@@ -746,3 +783,6 @@ class ProjectManager:
             self.bind_mousewheel(self.tab_frame, "<MouseWheel>", self.tab_canvas)
 
 app = ProjectManager()
+
+
+

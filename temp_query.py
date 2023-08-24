@@ -173,14 +173,21 @@ def task_info(id):
     }
     return task_data[id] 
 
-def get_projects():
+def get_projects(user = None):
+    if user != None: return ["Project Manager"]
     return ["Project Manager", "PETra", "Another Project", "Profitable Idea!", "Anything TBH"]
 
 def get_all_skills():
     return developer_skills
 
-def verify_user(user):
-    return user == "admin"
+def verify_user(user, password= None):
+    if password != None:
+        if user == 'admin' and password == 'password':
+            return "admin"
+        else:
+            return False
+    else:
+        return user == "admin"
 
 def create_user(user, password, skills = []):
     print(user)
@@ -194,5 +201,3 @@ def add_skill(var):
             add_skill(i)
     elif isinstance(var, str):
         print("Skill added: "+var)
-
-add_skill(["String", "Other", "Something", ])
