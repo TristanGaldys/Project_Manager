@@ -187,3 +187,12 @@ def create_user(user, password, skills = []):
     print(password)
     print(skills)
     return True
+
+def add_skill(var):
+    if isinstance(var, list):
+        for i in var:
+            add_skill(i)
+    elif isinstance(var, str):
+        print("Skill added: "+var)
+
+add_skill(["String", "Other", "Something", ])
