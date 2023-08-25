@@ -16,6 +16,7 @@ cur.execute('''
     skills TEXT
     )
     ''')
+
 # Create Table PROJECTS
 cur.execute('''
     CREATE TABLE IF NOT EXISTS projects (
@@ -30,6 +31,7 @@ cur.execute('''
         uncompleted_tasks INTEGER
     )
 ''')
+
 # Create Table TASKS
 cur.execute('''
     CREATE TABLE IF NOT EXISTS tasks (
@@ -44,47 +46,12 @@ cur.execute('''
     )
 ''')
 
-# Adding data into users table
-users_data =[]
-
-# Adding data into projects table
-projects_data = []
-
-# Adding data into tasks table
-tasks_data = [
-    # ('user_id', 'project_id', 'task', 'description', 'deadline', 'required skills'),
-    ('1', '', '', '', None, ''),
-    ('2', '', '', '', None, ''),
-    ('3', '', '', '', None, ''),
-    ('4', '', '', '', None, ''),
-    ('5', '', '', '', None, ''),
-    ('6', '', '', '', None, ''),
-    ('7', '', '', '', None, ''),
-    ('8', '', '', '', None, ''),
-    ('9', '', '', '', None, ''),
-    ('10', '', '', '', None, ''),
-    ('11', '', '', '', None, ''),
-    ('12', '', '', '', None, ''),
-    ('13', '', '', '', None, ''),
-    ('14', '', '', '', None, ''),
-    ('15', '', '', '', None, ''),
-    ('16', '', '', '', None, ''),
-    ('17', '', '', '', None, ''),
-    ('18', '', '', '', None, ''),
-]
-
-
-cur.executemany("INSERT INTO users (name, skills) VALUES (?, ?)", users_data)
-
-cur.executemany("INSERT INTO projects (owner, project, project_id, tasks, start_date, description, completed_tasks, uncompleted_tasks) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", projects_data)
-
-#cur.executemany("INSERT INTO tasks (user_id, project_id, task, description, deadline, required_skills) VALUES ( ?, ?, ?, ?, ?, ?)", tasks_data)
-
-print("Users, Project and Tasks Table has been created.")
-
-# CHECK
 # Query and print data from 'users' table
 print("Users Table:")
+# Print the column names
+cur.execute("PRAGMA table_info(users)")
+column_names = [row[1] for row in cur.fetchall()]
+print("Column names:", column_names)
 cur.execute("SELECT * FROM users")
 for row in cur.fetchall():
     print(row)
@@ -93,19 +60,23 @@ print("\n")
 
 # Query and print data from 'projects' table
 print("Projects Table:")
+# Print the column names
+cur.execute("PRAGMA table_info(projects)")
+column_names = [row[1] for row in cur.fetchall()]
+print("Column names:", column_names)
 cur.execute("SELECT * FROM projects")
 for row in cur.fetchall():
     print(row)
 
 print("\n")
-#
-# # Query and print data from 'tasks' table
-# print("Task Table:")
-# cur.execute("SELECT * FROM tasks")
-# for row in cur.fetchall():
-#     print(row)
 
-cur.execute("SELECT project from projects")
+# Query and print data from 'tasks' table
+print("Task Table:")
+# Print the column names
+cur.execute("PRAGMA table_info(tasks)")
+column_names = [row[1] for row in cur.fetchall()]
+print("Column names:", column_names)
+cur.execute("SELECT * FROM tasks")
 for row in cur.fetchall():
     print(row)
 
